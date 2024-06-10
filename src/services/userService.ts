@@ -1,6 +1,6 @@
 const API_URL = 'https://localhost:7254/api/Users'; // Cambia esta URL según sea necesario
 
-export async function addUser(user:any) {
+export async function addUser(user: any) {
     const response = await fetch(`${API_URL}/CreateUser`, {
         method: 'POST',
         headers: {

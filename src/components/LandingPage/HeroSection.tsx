@@ -14,7 +14,7 @@ const HeroSection: React.FC = () => {
                     <div className="bg-white p-6 rounded-lg shadow-md flex flex-col lg:flex-row lg:items-center lg:space-x-4 space-y-4 lg:space-y-0 mb-4">
                         <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2 w-full lg:w-auto">
                             <span className="material-icons text-gray-400">search</span>
-                            <input type="text" placeholder="Job title, keyword" className="border-none focus:outline-none flex-grow px-2" />
+                            <input type="text" placeholder="Job title, keyword" className="focus:outline-none flex-grow px-2" />
                         </div>
                         <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2 w-full lg:w-auto">
                             <span className="material-icons text-gray-400">location_on</span>

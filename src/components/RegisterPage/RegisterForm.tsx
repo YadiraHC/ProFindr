@@ -43,6 +43,10 @@ const RegisterForm: React.FC = () => {
         }
     };
 
+    const isFormValid = () => {
+        return fullName && email && password && repeatPassword;
+    };
+
     return (
         <div className="bg-white px-[1.6rem] w-full max-w-lg mx-auto mt-12 lg:mt-0" style={{ margin: '3.2rem auto' }}>
             <h2 className="text-3xl font-bold mb-4 text-left">Create your account with us below</h2>
@@ -53,14 +57,14 @@ const RegisterForm: React.FC = () => {
                     <div className="flex flex-col md:flex-row justify-center lg:justify-start space-y-4 md:space-y-0 md:space-x-4">
                         <button
                             type="button"
-                            className={`w-full md:w-auto px-4 py-2 rounded-lg ${accountType === 'employee' ? 'bg-[#0A65CC] text-white' : 'border border-gray-300 text-gray-700'}`}
+                            className={`w-full md:w-auto px-4 py-2 rounded-lg ${accountType === 'employee' ? 'border border-[#0A65CC] bg-[#EAF2FB] text-[#0A65CC] font-medium' : 'border border-gray-300 text-gray-700'}`}
                             onClick={() => setAccountType('employee')}
                         >
                             As an Employee
                         </button>
                         <button
                             type="button"
-                            className={`w-full md:w-auto px-4 py-2 rounded-lg ${accountType === 'employer' ? 'bg-[#0A65CC] text-white' : 'border border-gray-300 text-gray-700'}`}
+                            className={`w-full md:w-auto px-4 py-2 rounded-lg ${accountType === 'employer' ? 'border border-[#0A65CC] bg-[#EAF2FB] text-[#0A65CC] font-medium' : 'border border-gray-300 text-gray-700'}`}
                             onClick={() => setAccountType('employer')}
                         >
                             As an Employer
@@ -107,7 +111,13 @@ const RegisterForm: React.FC = () => {
                         className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                     />
                 </div>
-                <button type="submit" className="w-full bg-[#0A65CC] text-white px-4 py-2 rounded-lg">Create Account</button>
+                <button
+                    type="submit"
+                    className={`w-full px-4 py-2 rounded-lg text-white ${isFormValid() ? 'bg-[#0A65CC] hover:bg-[#084a9b]' : 'bg-[#0A65CC] bg-opacity-50 cursor-not-allowed'}`}
+                    disabled={!isFormValid()}
+                >
+                    Create Account
+                </button>
                 {error && <p className="text-red-500 mt-4">{error}</p>}
                 {success && <p className="text-green-500 mt-4">{success}</p>}
             </form>

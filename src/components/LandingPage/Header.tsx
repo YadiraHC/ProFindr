@@ -25,13 +25,13 @@ const Header: React.FC = () => {
                 </div>
                 <div className="flex items-center">
                     <button
-                        className="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg mr-2"
+                        className="border border-[#0A65CC] text-[#0A65CC] px-4 py-2 rounded-lg mr-2"
                         onClick={() => navigate('/register')}
                     >
                         Sign Up
                     </button>
                     <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                        className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg"
                         onClick={() => navigate('/login')}
                     >
                         Log In
