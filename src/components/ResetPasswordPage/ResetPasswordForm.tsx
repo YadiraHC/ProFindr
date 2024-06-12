@@ -52,7 +52,7 @@ const ResetPasswordForm: React.FC = () => {
                 {error && <p className="text-red-500 mt-[4%]">{error}</p>}
                 {success && <p className="text-green-500 mt-[4%]">{success}</p>}
             </form>
-            <p className="text-gray-600 mt-[10%] text-center lg:text-left">
+            <p className="text-gray-600 mt-[10%]  text-left">
                 Don't have an account? <a href="/register" className="text-[#0A65CC]">Register</a>
             </p>
             <button
