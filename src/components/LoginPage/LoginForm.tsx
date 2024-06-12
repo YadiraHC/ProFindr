@@ -60,7 +60,7 @@ const LoginForm: React.FC = () => {
                     />
                 </div>
                 <div className="flex justify-between items-center mb-6">
-                    <a href="/forgot-password" className="text-[#0A65CC]">Forgot Password?</a>
+                    <a href="/reset" className="text-[#0A65CC]">Forgot Password?</a>
                 </div>
                 <button
                     type="submit"
