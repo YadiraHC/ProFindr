@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { addUser } from '../../services/userService';
 
 const LoginForm: React.FC = () => {
-    const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -12,8 +11,8 @@ const LoginForm: React.FC = () => {
         e.preventDefault();
 
         const user = {
-            fullName,
             email,
+            password,
         };
 
         try {
@@ -21,10 +20,8 @@ const LoginForm: React.FC = () => {
             setSuccess('Account created successfully');
             setError('');
             // Clear form fields after successful registration
-            setFullName('');
             setEmail('');
             setPassword('');
-            /* setRepeatPassword(''); */
         } catch (err: any) {
             setError(err.message);
             setSuccess('');
@@ -32,21 +29,23 @@ const LoginForm: React.FC = () => {
     };
 
     const isFormValid = () => {
-        return fullName && password;
+        return email && password;
     };
 
     return (
-        <div className="bg-white px-[1.6rem] w-full max-w-lg mx-auto mt-12 lg:mt-0" style={{ margin: '3.2rem auto' }}>
-            <h2 className="text-4xl font-bold mb-4 text-left">Welcome back!</h2>
-            
+        <div className="bg-white px-[1.6rem] mt-[1.6rem] w-full max-w-lg mx-auto" >
+            <h2 className="text-4xl font-bold mb-4 text-left md:mb-[3.2rem] ">Welcome back!</h2>
+            <div className="md:hidden flex justify-center mb-[3.2rem]">
+                <img src="./images/avatar.png" alt="Profile" className="w-50 h-50" />
+            </div>
             <form onSubmit={handleSubmit}>
                 <div className="mb-6">
-                    <label className="block text-gray-700 mb-4">Full Name</label>
+                    <label className="block text-gray-700 mb-4">Email Address</label>
                     <input
                         type="text"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        placeholder="Enter your full name"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter your email address"
                         className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                     />
                 </div>
@@ -59,6 +58,9 @@ const LoginForm: React.FC = () => {
                         placeholder="Password"
                         className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                     />
+                </div>
+                <div className="flex justify-between items-center mb-6">
+                    <a href="/forgot-password" className="text-[#0A65CC]">Forgot Password?</a>
                 </div>
                 <button
                     type="submit"
@@ -78,3 +80,4 @@ const LoginForm: React.FC = () => {
 };
 
 export default LoginForm;
+ 

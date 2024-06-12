@@ -4,8 +4,8 @@ const LeftPanel: React.FC = () => {
     return (
         <div className="bg-[#E7F0FA] p-8 h-full flex flex-col justify-between">
             <div className='text-[#0A65CC]'>
-                <a href="/"><img src="./images/Logo.png"  alt="ProFindr Logo" className="h-10 mb-[2rem]" /></a>
-                <h2 className="text-5xl font-medium">Connecting Talent to Opportunities</h2>
+{/*                 <a href="/"><img src="./images/Logo.png"  alt="ProFindr Logo" className="h-10 mb-[2rem]" /></a>
+ */}                <h2 className="text-5xl font-medium">Connecting Talent to Opportunities</h2>
                 <p className="mt-4 text-l ">
                     Discover endless opportunities on ProFindr, where talented freelancers and businesses unite. Jump right in with us!
                 </p>

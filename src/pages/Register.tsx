@@ -8,7 +8,7 @@ const RegisterPage: React.FC = () => {
             <div className="hidden lg:block lg:w-1/3 h-full">
                 <LeftPanel />
             </div>
-            <div className="w-full lg:w-2/3 h-full flex items-center justify-center">
+            <div className="w-full lg:w-2/3 h-full flex md:items-center md:justify-center">
                 <RegisterForm />
             </div>
         </div>
