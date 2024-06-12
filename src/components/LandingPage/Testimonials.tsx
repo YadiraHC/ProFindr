@@ -54,7 +54,7 @@ const Testimonials: React.FC = () => {
                         </div>
                     ))}
                 </div>
-                <div className="md:hidden">
+                <div className="lg:hidden">
                     <Carousel showThumbs={false} showStatus={false} autoPlay infiniteLoop>
                         {testimonials.map((testimonial, index) => (
                             <div key={index} className="bg-[#0A65CC] text-white p-6 rounded-lg">

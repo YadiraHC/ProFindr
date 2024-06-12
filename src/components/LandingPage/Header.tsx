@@ -9,7 +9,7 @@ const Header: React.FC = () => {
             <nav className="container mx-auto px-6 py-3 flex items-center justify-between">
                 <div className="flex items-center">
                     <img src="./images/Logo.png" alt="ProFindr Logo" className="h-8 mr-3" />
-                   
+                    <p className='font-bold text-xl'>ProFindr</p>
                 </div>
                 <div className="flex items-center">
                     <button

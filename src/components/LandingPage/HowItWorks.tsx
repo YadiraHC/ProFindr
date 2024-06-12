@@ -50,7 +50,7 @@ const HowItWorks: React.FC = () => {
                 </div>
                 <div className="lg:hidden">
                     {steps.map((step, index) => (
-                        <div key={index} className="flex flex-col items-center text-center mb-8">
+                        <div key={index} className={`flex flex-col items-center text-center mb-8 ${step.isMain ? 'bg-white p-6 rounded-lg shadow-md' : ''}`}>
                             <div className={`bg-white rounded-full p-4 mb-4 ${step.isMain ? 'shadow-lg' : 'shadow-md'}`}>
                                 <span className="material-icons text-[#0A65CC] text-4xl">{step.icon}</span>
                             </div>
