@@ -2,7 +2,7 @@ import React from 'react';
 
 const HeroSection: React.FC = () => {
     return (
-        <section className="bg-gray-100 py-12">
+        <section className="bg-gray-100 py-12">{/* Hola desde el HeroSectio */}
             <div className="container mx-auto px-6 lg:flex lg:items-center lg:justify-between">
                 <div className="xl:w-[50%]">
                     <h1 className="text-4xl lg:text-6xl font-medium leading-tight mb-4">
@@ -26,12 +26,12 @@ const HeroSection: React.FC = () => {
                         Suggestion: <span className="text-[#0A65CC]">Construction worker</span>, <span className="text-[#0A65CC]">Plumber</span>, <span className="text-blue-500">Electrician</span>, <span className="text-blue-500">Cleaning</span>, <span className="text-blue-500">Mechanics</span>.
                     </p>
                 </div>
-                <div className="xl:w-[45%] mt-12 lg:mt-0 flex justify-center">
+                <div className="hidden lg:block xl:w-[45%] mt-12 lg:mt-0 justify-center ">
                     <img src="./images/Professionals.png" alt="Professionals" className="w-full lg:w-3/4" />
                 </div>
             </div>
-            <div className="container mx-auto px-6 mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
+            <div className=" hidden lg:grid container mx-auto px-6 mt-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="bg-white p-6 rounded-lg shadow-md flex items-center ">
                     <div className="bg-blue-100 rounded-lg p-3 mr-4">
                         <span className="material-icons text-[#0A65CC]">work_outline</span>
                     </div>
@@ -49,7 +49,7 @@ const HeroSection: React.FC = () => {
                         <p className="text-gray-600">Companies</p>
                     </div>
                 </div>
-                <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
+                <div className="bg-white p-6 rounded-lg shadow-md flex items-center ">
                     <div className="bg-blue-100 rounded-lg p-3 mr-4">
                         <span className="material-icons text-[#0A65CC]">people</span>
                     </div>
@@ -58,7 +58,7 @@ const HeroSection: React.FC = () => {
                         <p className="text-gray-600">Candidates</p>
                     </div>
                 </div>
-                <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
+                <div className="bg-white p-6 rounded-lg shadow-md flex items-center ">
                     <div className="bg-blue-100 rounded-lg p-3 mr-4">
                         <span className="material-icons text-[#0A65CC]">new_releases</span>
                     </div>
