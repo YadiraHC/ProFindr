@@ -1,30 +1,25 @@
 import React, { useState } from 'react';
-import { addUser } from '../../services/userService';
+import { useNavigate } from 'react-router-dom'; // Hook correcto para v6
+import { loginUser } from '../../services/userService';
 
 const LoginForm: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+    const navigate = useNavigate(); // Hook para navegación
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const user = {
-            email,
-            password,
-        };
+        const credentials = { email, password };
 
         try {
-            await addUser(user); 
-            setSuccess('Account created successfully');
+            const response = await loginUser(credentials); 
+            localStorage.setItem('token', response.token); // Guardar el token en localStorage
             setError('');
-            // Clear form fields after successful registration
-            setEmail('');
-            setPassword('');
+            navigate('/home'); // Redirigir a /home después de un login exitoso
         } catch (err: any) {
             setError(err.message);
-            setSuccess('');
         }
     };
 
@@ -33,10 +28,10 @@ const LoginForm: React.FC = () => {
     };
 
     return (
-        <div className="bg-white px-[1.6rem] mt-[1.6rem] w-full max-w-lg mx-auto" >
-            <h2 className="text-4xl font-bold mb-4 text-left md:mb-[3.2rem] ">Welcome back!</h2>
-            <div className="md:hidden flex justify-center mb-[3.2rem]">
-                <img src="./images/avatar.png" alt="Profile" className="w-50 h-50" />
+        <div className="bg-white px-[1.6rem] w-full max-w-lg mx-auto mt-12 lg:mt-0" style={{ margin: '3.2rem auto' }}>
+            <h2 className="text-4xl font-bold mb-4 text-left md:mb-[3.2rem]">Welcome back!</h2>
+            <div className="md:hidden flex justify-center mb-6">
+                <img src="./images/avatar.png" alt="Profile" className="w-32 h-32" />
             </div>
             <form onSubmit={handleSubmit}>
                 <div className="mb-6">
@@ -60,7 +55,7 @@ const LoginForm: React.FC = () => {
                     />
                 </div>
                 <div className="flex justify-between items-center mb-6">
-                    <a href="/reset" className="text-[#0A65CC]">Forgot Password?</a>
+                    <a href="/forgot-password" className="text-[#0A65CC]">Forgot Password?</a>
                 </div>
                 <button
                     type="submit"
@@ -70,7 +65,6 @@ const LoginForm: React.FC = () => {
                     Log In
                 </button>
                 {error && <p className="text-red-500 mt-4">{error}</p>}
-                {success && <p className="text-green-500 mt-4">{success}</p>}
             </form>
             <p className="text-gray-600 mt-4 text-center lg:text-left">
                 Don't have an account? <a href="/register" className="text-[#0A65CC]">Register</a>
@@ -80,4 +74,3 @@ const LoginForm: React.FC = () => {
 };
 
 export default LoginForm;
- 

@@ -12,6 +12,7 @@ import Messages from '../pages/Messages';
 import Notifications from '../pages/Notifications';
 import Settings from '../pages/Settings';
 import MyProfile from '../pages/MyProfile';
+import ProtectedRoute from '../components/common/ProtectedRoute';
 
 const AppRoutes = () => (
     <Routes>
@@ -19,14 +20,14 @@ const AppRoutes = () => (
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/reset" element={<ResetPassword />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/find-work" element={<FindWork />} />
-        <Route path="/my-jobs" element={<MyJobs />} />
-        <Route path="/my-activity" element={<MyActivity />} />
-        <Route path="/messages" element={<Messages />} />
-        <Route path="/notifications" element={<Notifications />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/my-profile" element={<MyProfile />} />
+        <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
+        <Route path="/find-work" element={<ProtectedRoute element={<FindWork />} />} />
+        <Route path="/my-jobs" element={<ProtectedRoute element={<MyJobs />} />} />
+        <Route path="/my-activity" element={<ProtectedRoute element={<MyActivity />} />} />
+        <Route path="/messages" element={<ProtectedRoute element={<Messages />} />} />
+        <Route path="/notifications" element={<ProtectedRoute element={<Notifications />} />} />
+        <Route path="/settings" element={<ProtectedRoute element={<Settings />} />} />
+        <Route path="/my-profile" element={<ProtectedRoute element={<MyProfile />} />} />
     </Routes>
 );
 

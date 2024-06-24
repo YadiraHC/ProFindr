@@ -1,8 +1,20 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { logoutUser } from '../../services/userService';
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
+    const isAuthenticated = !!localStorage.getItem('token');
+
+    const handleLogout = async () => {
+        try {
+            await logoutUser();
+            localStorage.removeItem('token');
+            navigate('/');
+        } catch (err: any) {
+            console.error(err.message);
+        }
+    };
 
     return (
         <header className="bg-white shadow">
@@ -12,18 +24,29 @@ const Header: React.FC = () => {
                     <p className='font-bold text-xl'>ProFindr</p>
                 </div>
                 <div className="flex items-center">
-                    <button
-                        className="border border-[#0A65CC] text-[#0A65CC] px-4 py-2 rounded-lg mr-2"
-                        onClick={() => navigate('/register')}
-                    >
-                        Sign Up
-                    </button>
-                    <button
-                        className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg"
-                        onClick={() => navigate('/login')}
-                    >
-                        Log In
-                    </button>
+                    {isAuthenticated ? (
+                        <button
+                            className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </button>
+                    ) : (
+                        <>
+                            <button
+                                className="border border-[#0A65CC] text-[#0A65CC] px-4 py-2 rounded-lg mr-2"
+                                onClick={() => navigate('/register')}
+                            >
+                                Sign Up
+                            </button>
+                            <button
+                                className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg"
+                                onClick={() => navigate('/login')}
+                            >
+                                Log In
+                            </button>
+                        </>
+                    )}
                 </div>
             </nav>
         </header>
