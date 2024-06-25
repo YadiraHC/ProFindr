@@ -1,8 +1,11 @@
-import React from 'react';
+// src/pages/Home.tsx
+
+import React, { useState } from 'react';
 import SideMenu from '../components/common/SideMenu';
 import ServiceCard from '../components/Home/ServiceCard';
+import AddServiceModal from '../components/Home/AddServiceModal';
 
-const services = [
+const servicesData = [
     {
         title: 'Mantenimiento general del jardín',
         location: 'Cancún, Quintana Roo',
@@ -36,6 +39,13 @@ const services = [
 ];
 
 const Home: React.FC = () => {
+    const [services, setServices] = useState(servicesData);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleAddService = (service: any) => {
+        setServices([...services, service]);
+    };
+
     return (
         <div className="flex bg-[#F7F7F8]">
             <div className="hidden md:block">
@@ -44,7 +54,9 @@ const Home: React.FC = () => {
             <div className="flex-1 p-8">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-2xl font-bold">Your Services</h1>
-                    <button className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg">Add Services</button>
+                    <button className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg" onClick={() => setIsModalOpen(true)}>
+                        Add Services
+                    </button>
                 </div>
                 <div className="space-y-4">
                     {services.map((service, index) => (
@@ -52,6 +64,7 @@ const Home: React.FC = () => {
                     ))}
                 </div>
             </div>
+            <AddServiceModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleAddService} />
         </div>
     );
 };
