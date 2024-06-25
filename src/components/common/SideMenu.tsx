@@ -27,7 +27,7 @@ const SideMenu: React.FC = () => {
                     <div
                         key={item.name}
                         className={`flex items-center p-2 mb-4 rounded cursor-pointer ${
-                            location.pathname === item.path ? 'bg-blue-100 text-blue-500' : 'text-gray-700'
+                            location.pathname === item.path ? 'bg-blue-100 text-[#0A65CC]' : 'text-gray-700'
                         }`}
                         onClick={() => navigate(item.path)}
                     >
