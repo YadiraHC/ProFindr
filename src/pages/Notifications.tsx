@@ -52,27 +52,7 @@ const Notifications: React.FC = () => {
         IsRead: false,
         CreatedAt: "Last Friday at 11:00 AM",
       },
-      {
-        NotificationId: 6,
-        UserId: 106,
-        Message: "Casey Smith requested access to Isla Nublar operational plan",
-        IsRead: true,
-        CreatedAt: "Last Monday at 8:30 AM",
-      },
-      {
-        NotificationId: 7,
-        UserId: 107,
-        Message: "Kim Lee requested access to Isla Nublar construction schedule",
-        IsRead: false,
-        CreatedAt: "Last Tuesday at 12:45 PM",
-      },
-      {
-        NotificationId: 8,
-        UserId: 108,
-        Message: "Chris Johnson requested access to Isla Nublar security protocols",
-        IsRead: true,
-        CreatedAt: "Last Wednesday at 9:50 AM",
-      },
+      
     ];
   };
 
