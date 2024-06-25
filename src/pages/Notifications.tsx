@@ -38,6 +38,41 @@ const Notifications: React.FC = () => {
         IsRead: true,
         CreatedAt: "Last Wednesday at 9:42 AM",
       },
+      {
+        NotificationId: 4,
+        UserId: 104,
+        Message: "Alexa Turner requested access to Isla Sorna SOC2 compliance report",
+        IsRead: true,
+        CreatedAt: "Last Thursday at 10:15 AM",
+      },
+      {
+        NotificationId: 5,
+        UserId: 105,
+        Message: "Jordan Ellis requested access to Site B environmental impact report",
+        IsRead: false,
+        CreatedAt: "Last Friday at 11:00 AM",
+      },
+      {
+        NotificationId: 6,
+        UserId: 106,
+        Message: "Casey Smith requested access to Isla Nublar operational plan",
+        IsRead: true,
+        CreatedAt: "Last Monday at 8:30 AM",
+      },
+      {
+        NotificationId: 7,
+        UserId: 107,
+        Message: "Kim Lee requested access to Isla Nublar construction schedule",
+        IsRead: false,
+        CreatedAt: "Last Tuesday at 12:45 PM",
+      },
+      {
+        NotificationId: 8,
+        UserId: 108,
+        Message: "Chris Johnson requested access to Isla Nublar security protocols",
+        IsRead: true,
+        CreatedAt: "Last Wednesday at 9:50 AM",
+      },
     ];
   };
 
