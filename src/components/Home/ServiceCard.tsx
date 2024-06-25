@@ -1,5 +1,3 @@
-// src/components/Home/ServiceCard.tsx
-
 import React, { useState, useRef, useEffect } from 'react';
 
 interface ServiceCardProps {
@@ -47,7 +45,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
                     <p className="text-gray-600 mb-1">{service.applications} applied</p>
                 )}
             </div>
-            <div className="flex-shrink-0 text-right">
+            <div className="flex-shrink-0 text-right hidden md:block px-4">
                 <p className="text-gray-600 mb-1">Team</p>
                 <p className="text-gray-800 mb-2">{service.team}</p>
                 <p className="text-[#0A65CC] font-bold text-lg">{`$${service.price} /hour`}</p>

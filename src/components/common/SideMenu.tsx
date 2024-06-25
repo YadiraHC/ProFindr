@@ -17,7 +17,7 @@ const SideMenu: React.FC = () => {
     const location = useLocation();
 
     return (
-        <aside className="bg-gray-50 w-64 h-screen px-4 py-8 border-r">
+        <aside className="bg-white w-64 h-screen px-4 py-8 border-r">
             <div className="flex items-center mb-8">
                 <img src="./images/Logo.png" alt="ProFindr Logo" className="h-10 mr-3" />
                 <span className="text-xl font-bold">ProFindr</span>

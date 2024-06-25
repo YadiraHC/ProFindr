@@ -1,5 +1,3 @@
-// src/pages/Home.tsx
-
 import React from 'react';
 import SideMenu from '../components/common/SideMenu';
 import ServiceCard from '../components/Home/ServiceCard';
@@ -39,8 +37,10 @@ const services = [
 
 const Home: React.FC = () => {
     return (
-        <div className="flex">
-            <SideMenu />
+        <div className="flex bg-[#F7F7F8]">
+            <div className="hidden md:block">
+                <SideMenu />
+            </div>
             <div className="flex-1 p-8">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-2xl font-bold">Your Services</h1>
