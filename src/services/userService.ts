@@ -1,4 +1,4 @@
-const API_URL = 'https://localhost:7254/api/Users'; 
+const API_URL = 'https://localhost:7254/api/Users';
 
 export async function addUser(user: any) {
     const response = await fetch(`${API_URL}/CreateUser`, {
@@ -33,11 +33,12 @@ export async function loginUser(credentials: any) {
 }
 
 export async function logoutUser() {
+    const token = localStorage.getItem('token'); // Obtén el token del almacenamiento local
     const response = await fetch(`${API_URL}/logout`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            'Authorization': `Bearer ${token}` // Asegúrate de incluir el token en el encabezado de autorización
         }
     });
 
