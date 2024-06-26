@@ -12,7 +12,7 @@ type Notification = {
   report: string;
   IsRead: boolean;
   CreatedAt: string;
-  Image?: string;
+  Image: string;
 };
 
 const Notifications: React.FC = () => {
@@ -74,7 +74,7 @@ const Notifications: React.FC = () => {
         report: "environmental impact report",
         IsRead: false ,
         CreatedAt: "Last Friday at 11:00 AM",
-        Image:""
+        Image:" "
       }
     ];
   };

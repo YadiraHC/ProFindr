@@ -10,7 +10,7 @@ type NotificationProps = {
     report: string;
     IsRead: boolean;
     CreatedAt: string;
-    Image?: string; // Nueva propiedad opcional para la imagen específica de la notificación
+    Image: string; // Nueva propiedad opcional para la imagen específica de la notificación
   };
 };
 const defaultImage = "https://cdn-icons-png.flaticon.com/128/9131/9131646.png"; // Aquí va tu imagen base64
@@ -18,12 +18,14 @@ const defaultImage = "https://cdn-icons-png.flaticon.com/128/9131/9131646.png"; 
 export const NotificationCard: React.FC<NotificationProps> = ({
   notification,
 }) => {
+    // Asegurarse de que la imagen no esté vacía ni solo contenga espacios
+    const imageSrc = notification.Image.trim() ? notification.Image : defaultImage;
   return (
     <div className="bg-white p-6 rounded-lg shadow-md flex ">
       <div className="flex space-x-4">{/* para cambiar la linea de separacion de img con cards */}
         <div className="flex space-x-3 w-16 h-16 rounded-full mr-sm-0 md:w-8 md:h-8">
           <img
-            src={notification.Image || defaultImage}
+            src={imageSrc}
             alt="Notification Icon"
             className="w-8 h-8 md:w-6 md:h-6  rounded-full"
           />
