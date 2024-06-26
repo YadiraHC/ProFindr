@@ -41,10 +41,10 @@ export const NotificationCard: React.FC<NotificationProps> = ({
           </div>
 
           <div>
-            <button className="bg-[#0A65CC] text-white px-4 py-1 rounded-lg mr-2">
+            <button className="bg-[#0A65CC] text-white px-3 py-1 rounded-lg mr-2">
               View
             </button>
-            <button className="bg-[#FFFFFF] text-black px-4 py-1 rounded-lg border border-gray-300">
+            <button className="bg-[#FFFFFF] text-black px-3 py-1 rounded-lg border border-gray-300">
               Decline
             </button>
           </div>
