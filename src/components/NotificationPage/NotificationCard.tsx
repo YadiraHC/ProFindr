@@ -19,29 +19,35 @@ export const NotificationCard: React.FC<NotificationProps> = ({
   notification,
 }) => {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md flex justify-between items-center relative">
-      
-      <div className="text-sm">
-        
-        <div className="flex-shrink-0 w-16 h-16 md:w-24 md:h-24 rounded-full overflow-hidden">
+    <div className="bg-white p-4 rounded-lg shadow-md flex ">
+      <div className="flex w-16 h-16 rounded-full mr-sm-0 md:w-8 md:h-8">
         <img
           src={notification.Image || defaultImage}
           alt="Notification Icon"
-          className="w-full h-full object-cover"
+          className="w-16 h-16 md:w-6 md:h-6  rounded-full"
         />
       </div>
-
-       <p className="text-lg font-bold mb-2">{notification.title}<p className="text-gray-600 mb-1">{notification.Message}  </p> {notification.location} {notification.report}</p> 
-        <div className="flex-grow">
+      <div className="flex-grow">
+        <div>
+          <span className="text-xs font-bold">{notification.title} </span>
+          <span className="text-gray-600 text-xs">{notification.Message} </span>
+          <span className="text-xs font-bold">
+            {notification.location} {notification.report}{" "}
+          </span>
           <br />
-          <button className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg">
+        </div>
+
+        <div>
+          <button className="bg-[#0A65CC] text-white px-4 py-1 rounded-lg mr-2">
             View
           </button>
-          <button className="bg-[#FFFF] text-black px-4 py-2 rounded-lg">
+          <button className="bg-[#FFFFFF] text-black px-4 py-1 rounded-lg border border-gray-300">
             Decline
           </button>
-          <br />
-          <p className="text-gray-500 text-xs "><br />{notification.CreatedAt}</p>
+        </div>
+
+        <div>
+          <p className="text-gray-500 text-xs mt-0">{notification.CreatedAt}</p>
         </div>
       </div>
     </div>

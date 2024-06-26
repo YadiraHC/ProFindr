@@ -6,9 +6,13 @@ import { NotificationCard } from "../components/NotificationPage/NotificationCar
 type Notification = {
   NotificationId: number;
   UserId: number;
+  title: string;
   Message: string;
+  location: string;
+  report: string;
   IsRead: boolean;
   CreatedAt: string;
+  Image?: string;
 };
 
 const Notifications: React.FC = () => {
@@ -25,7 +29,8 @@ const Notifications: React.FC = () => {
         location: "Isla Nublar",
         report: "SOC2 compliance report",
         IsRead: false,
-        CreatedAt: "Last Wednesday at 9:42 AM"
+        CreatedAt: "Last Wednesday at 9:42 AM",
+        Image:"https://images.pexels.com/photos/1310522/pexels-photo-1310522.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
       },
       {
         NotificationId: 2,
@@ -35,7 +40,8 @@ const Notifications: React.FC = () => {
         location: "Isla Nublar",
         report: "SOC2 compliance report",
         IsRead: false,
-        CreatedAty: "Last Wednesday at 9:42 AM"
+        CreatedAt: "Last Wednesday at 9:42 AM",
+        Image:"https://images.pexels.com/users/avatars/551816/george-dolgikh-561.jpeg?auto=compress&fit=crop&h=130&w=130&dpr=1"
       },
       {
         NotificationId: 3,
@@ -45,7 +51,8 @@ const Notifications: React.FC = () => {
         location: "Isla Nublar",
         report: "SOC2 compliance report",
         IsRead: true,
-        CreatedAty: "Last Wednesday at 9:42 AM"
+        CreatedAt: "Last Wednesday at 9:42 AM",
+        Image:"https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
       },
       {
         NotificationId: 4,
@@ -55,7 +62,8 @@ const Notifications: React.FC = () => {
         location: "Isla Sorna",
         report: "SOC2 compliance report",
         IsRead: true,
-        CreatedAty: "Last Thursday at 10:15 AM"
+        CreatedAt: "Last Thursday at 10:15 AM",
+        Image:"https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
       },
       {
         NotificationId: 5,
@@ -65,7 +73,8 @@ const Notifications: React.FC = () => {
         location: "Site B",
         report: "environmental impact report",
         IsRead: false,
-        CreatedAty: "Last Friday at 11:00 AM"
+        CreatedAt: "Last Friday at 11:00 AM",
+        Image:" "
       }
     ];
   };
@@ -82,9 +91,7 @@ const Notifications: React.FC = () => {
       <div className="flex-1 p-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">Notifications</h1>
-          {/* <button className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg">Add Services</button> */}
         </div>
-
         <div className="space-y-4">
           {notifications.map((notification) => (
             <NotificationCard
