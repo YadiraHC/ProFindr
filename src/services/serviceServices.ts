@@ -48,7 +48,7 @@ export async function createService(service: any) {
 }
 
 export async function updateService(serviceId: number, service: any) {
-    const response = await fetch(`${API_URL}/${serviceId}`, {
+    const response = await fetch(`${API_URL}/updateService/${serviceId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
