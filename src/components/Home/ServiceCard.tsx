@@ -1,7 +1,10 @@
+// src/components/Home/ServiceCard.tsx
+
 import React, { useState, useRef, useEffect } from 'react';
 
 interface ServiceCardProps {
     service: {
+        serviceId: number;
         title: string;
         location: string;
         views: number;
@@ -12,9 +15,11 @@ interface ServiceCardProps {
         team: string;
         price: number;
     };
+    onEdit: () => void;
+    onDelete: () => void;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({ service, onEdit, onDelete }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -45,7 +50,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
                     <p className="text-gray-600 mb-1">{service.applications} applied</p>
                 )}
             </div>
-            <div className="flex-shrink-0 text-right hidden md:block px-4">
+            <div className="flex-shrink-0 text-right hidden md:block">
                 <p className="text-gray-600 mb-1">Team</p>
                 <p className="text-gray-800 mb-2">{service.team}</p>
                 <p className="text-[#0A65CC] font-bold text-lg">{`$${service.price} /hour`}</p>
@@ -54,9 +59,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
                 <button className="material-icons text-gray-600" onClick={toggleDropdown}>more_vert</button>
                 {isDropdownOpen && (
                     <div ref={dropdownRef} className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50">
-                        <button className="block px-4 py-2 text-left w-full">Edit</button>
+                        <button className="block px-4 py-2 text-left w-full" onClick={onEdit}>Edit</button>
                         <button className="block px-4 py-2 text-left w-full">View</button>
-                        <button className="block px-4 py-2 text-left w-full text-red-500">Delete</button>
+                        <button className="block px-4 py-2 text-left w-full text-red-500" onClick={onDelete}>Delete</button>
                     </div>
                 )}
             </div>

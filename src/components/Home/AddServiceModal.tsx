@@ -6,16 +6,35 @@ interface AddServiceModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (service: any) => void;
+    initialService?: any;
 }
 
-const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSubmit }) => {
+const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSubmit, initialService }) => {
     const [serviceName, setServiceName] = useState('');
-    const [description, setDescription] = useState('');
+    const [serviceDescription, setServiceDescription] = useState('');
     const [state, setState] = useState('');
     const [municipality, setMunicipality] = useState('');
-    const [rate, setRate] = useState('');
+    const [hourlyRate, setHourlyRate] = useState('');
     const [days, setDays] = useState<string[]>([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    useEffect(() => {
+        if (initialService) {
+            setServiceName(initialService.serviceName || '');
+            setServiceDescription(initialService.serviceDescription || '');
+            setState(initialService.state || '');
+            setMunicipality(initialService.municipality || '');
+            setHourlyRate(initialService.hourlyRate || '');
+            setDays(initialService.availability ? initialService.availability.split(', ') : []);
+        } else {
+            setServiceName('');
+            setServiceDescription('');
+            setState('');
+            setMunicipality('');
+            setHourlyRate('');
+            setDays([]);
+        }
+    }, [initialService]);
 
     const handleDayToggle = (day: string) => {
         setDays((prev) =>
@@ -24,42 +43,33 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSu
     };
 
     const handleSubmit = () => {
-        onSubmit({ serviceName, description, state, municipality, rate, days });
-        handleClose();
-    };
+        const availability = days.join(', '); // Convertir el array de días a una cadena
 
-    const handleClose = () => {
+        const newService = {
+            serviceName,
+            serviceDescription,
+            state,
+            municipality,
+            hourlyRate: parseFloat(hourlyRate), // Asegurarse de que sea un número
+            availability,
+            createdAt: new Date().toISOString(), // Añadir fecha de creación
+            updatedAt: new Date().toISOString()  // Añadir fecha de actualización
+        };
+
+        console.log("Submitting service:", newService); // Agregar este log
+
+        onSubmit(newService);
         onClose();
-        resetForm();
-    };
-
-    const resetForm = () => {
-        setServiceName('');
-        setDescription('');
-        setState('');
-        setMunicipality('');
-        setRate('');
-        setDays([]);
-    };
-
-    useEffect(() => {
-        if (!isOpen) {
-            resetForm();
-        }
-    }, [isOpen]);
-
-    const isFormValid = () => {
-        return serviceName && description && state && municipality && rate && days.length > 0;
     };
 
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white md:rounded-lg shadow-lg p-8 w-full h-full md:h-auto md:max-w-3xl md:mx-4 lg:mx-0 ">
+            <div className="bg-white md:rounded-lg shadow-lg p-8 w-full h-full md:h-auto md:max-w-3xl md:mx-4 lg:mx-0 sm:rounded-none sm:p-6">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold">Create your services</h2>
-                    <button onClick={handleClose} className="text-gray-500 hover:text-gray-700 focus:outline-none">
+                    <h2 className="text-2xl font-bold">{initialService ? 'Edit Service' : 'Create your services'}</h2>
+                    <button onClick={onClose} className="text-gray-500 hover:text-gray-700 focus:outline-none">
                         <span className="material-icons">close</span>
                     </button>
                 </div>
@@ -76,8 +86,8 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSu
                     <div>
                         <label className="block text-gray-700 mb-1">Description</label>
                         <textarea
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
+                            value={serviceDescription}
+                            onChange={(e) => setServiceDescription(e.target.value)}
                             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                             rows={3}
                         />
@@ -115,8 +125,8 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSu
                             <label className="block text-gray-700 mb-1">Hourly Rate</label>
                             <input
                                 type="text"
-                                value={rate}
-                                onChange={(e) => setRate(e.target.value)}
+                                value={hourlyRate}
+                                onChange={(e) => setHourlyRate(e.target.value)}
                                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                             />
                         </div>
@@ -147,10 +157,10 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSu
                     </div>
                     <button
                         onClick={handleSubmit}
-                        className={`w-full md:w-[50%] bg-[#0A65CC] text-white px-4 py-2 rounded-lg mt-4 ${isFormValid() ? 'hover:bg-[#084a9b]' : 'opacity-50 cursor-not-allowed'}`}
-                        disabled={!isFormValid()}
+                        className="w-full md:w-[50%]  bg-[#0A65CC] text-white px-4 py-2 rounded-lg mt-4"
+                        disabled={!serviceName || !serviceDescription || !state || !municipality || !hourlyRate || days.length === 0}
                     >
-                        Create Service
+                        {initialService ? 'Update Service' : 'Create Service'}
                     </button>
                 </div>
             </div>

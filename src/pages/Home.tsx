@@ -1,70 +1,103 @@
 // src/pages/Home.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SideMenu from '../components/common/SideMenu';
 import ServiceCard from '../components/Home/ServiceCard';
 import AddServiceModal from '../components/Home/AddServiceModal';
-
-const servicesData = [
-    {
-        title: 'Mantenimiento general del jardín',
-        location: 'Cancún, Quintana Roo',
-        views: 240,
-        date: 'Yesterday',
-        type: 'Full-time',
-        rating: 5,
-        team: 'Construction & Maintenance',
-        price: 400
-    },
-    {
-        title: 'Instalación de sistemas de riego',
-        location: 'Cancún, Quintana Roo',
-        views: 120,
-        date: '3 days ago',
-        type: 'Full-time',
-        rating: 4,
-        team: 'Construction & Maintenance',
-        price: 400
-    },
-    {
-        title: 'Asesoramiento sobre el cuidado de plantas',
-        location: 'Cancún, Quintana Roo',
-        views: 440,
-        date: '5 days ago',
-        type: 'Full-time',
-        applications: 34,
-        team: 'Construction & Maintenance',
-        price: 500
-    }
-];
+import { getServices, getServiceById, createService, updateService, deleteService } from '../services/serviceServices';
 
 const Home: React.FC = () => {
-    const [services, setServices] = useState(servicesData);
+    const [services, setServices] = useState<any[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedService, setSelectedService] = useState<any>(null);
+    const [isEditMode, setIsEditMode] = useState(false);
 
-    const handleAddService = (service: any) => {
-        setServices([...services, service]);
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const fetchedServices = await getServices();
+                setServices(fetchedServices);
+            } catch (error) {
+                console.error('Failed to fetch services:', error);
+            }
+        };
+
+        fetchServices();
+    }, []);
+
+    const handleAddService = () => {
+        setSelectedService(null);
+        setIsEditMode(false);
+        setIsModalOpen(true);
+    };
+
+    const handleEditService = async (serviceId: number) => {
+        try {
+            const service = await getServiceById(serviceId);
+            setSelectedService(service);
+            setIsEditMode(true);
+            setIsModalOpen(true);
+        } catch (error) {
+            console.error('Failed to fetch service:', error);
+        }
+    };
+
+    const handleDeleteService = async (serviceId: number) => {
+        try {
+            await deleteService(serviceId);
+            setServices((prev) => prev.filter((service) => service.serviceId !== serviceId));
+        } catch (error) {
+            console.error('Failed to delete service:', error);
+        }
+    };
+
+    const handleSubmitService = async (service: any) => {
+        try {
+            if (isEditMode && selectedService) {
+                await updateService(selectedService.serviceId, service);
+                setServices((prev) =>
+                    prev.map((s) => (s.serviceId === selectedService.serviceId ? service : s))
+                );
+            } else {
+                const newService = await createService(service);
+                setServices((prev) => [...prev, newService]);
+            }
+            setIsModalOpen(false);
+        } catch (error) {
+            console.error('Failed to submit service:', error);
+        }
     };
 
     return (
         <div className="flex bg-[#F7F7F8]">
-            <div className="hidden md:block">
-                <SideMenu />
-            </div>
+            <SideMenu />
             <div className="flex-1 p-8">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-2xl font-bold">Your Services</h1>
-                    <button className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg" onClick={() => setIsModalOpen(true)}>
+                    <button
+                        className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg"
+                        onClick={handleAddService}
+                    >
                         Add Services
                     </button>
                 </div>
                 <div className="space-y-4">
-                    {services.map((service, index) => (
-                        <ServiceCard key={index} service={service} />
+                    {services.map((service) => (
+                        <ServiceCard
+                            key={service.serviceId}
+                            service={service}
+                            onEdit={() => handleEditService(service.serviceId)}
+                            onDelete={() => handleDeleteService(service.serviceId)}
+                        />
                     ))}
                 </div>
             </div>
-            <AddServiceModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleAddService} />
+            <AddServiceModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={handleSubmitService}
+                initialService={selectedService}
+            />
         </div>
     );
 };
