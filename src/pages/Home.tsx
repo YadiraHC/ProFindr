@@ -68,8 +68,10 @@ const Home: React.FC = () => {
 
     return (
         <div className="flex bg-[#F7F7F8]">
-            <SideMenu />
-            <div className="flex-1 p-8">
+            <div className="hidden md:block">
+                <SideMenu />
+            </div>
+            <div className="flex-1 p-8 md:ml-64"> {/* Añadir md:ml-64 para el margen izquierdo en pantallas medianas y mayores */}
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-2xl font-bold">Your Services</h1>
                     <button
