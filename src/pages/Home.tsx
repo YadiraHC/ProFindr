@@ -15,6 +15,7 @@ const Home: React.FC = () => {
     const fetchServices = async () => {
         try {
             const fetchedServices = await getServices();
+            console.log('Fetched services:', fetchedServices); // Log the fetched services
             setServices(fetchedServices);
         } catch (error) {
             console.error('Failed to fetch services:', error);
@@ -34,6 +35,7 @@ const Home: React.FC = () => {
     const handleEditService = async (serviceId: number) => {
         try {
             const service = await getServiceById(serviceId);
+            console.log('Editing service:', service); // Log the selected service
             setSelectedService(service);
             setIsEditMode(true);
             setIsModalOpen(true);
@@ -54,7 +56,7 @@ const Home: React.FC = () => {
     const handleSubmitService = async (service: any) => {
         try {
             if (isEditMode && selectedService) {
-                await updateService(selectedService.serviceId, service);
+                await updateService(selectedService.serviceId, { ...service, serviceId: selectedService.serviceId });
                 fetchServices(); // Volver a cargar los servicios después de editar
             } else {
                 const newService = await createService(service);
@@ -67,11 +69,11 @@ const Home: React.FC = () => {
     };
 
     return (
-        <div className="flex bg-[#F7F7F8]">
+        <div className="flex bg-[#F7F7F8] min-h-screen"> {/* Asegurar que el fondo cubra toda la pantalla */}
             <div className="hidden md:block">
                 <SideMenu />
             </div>
-            <div className="flex-1 p-8 md:ml-64"> {/* Añadir md:ml-64 para el margen izquierdo en pantallas medianas y mayores */}
+            <div className="flex-1 p-8 md:ml-64 overflow-auto"> {/* Añadir overflow-auto para permitir el desplazamiento */}
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-2xl font-bold">Your Services</h1>
                     <button

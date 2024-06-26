@@ -1,4 +1,7 @@
 // src/services/serviceServices.ts
+
+import { toast } from 'react-toastify';
+
 const API_URL = 'https://localhost:7254/api/Services';
 
 export async function getServices() {
@@ -11,6 +14,7 @@ export async function getServices() {
     });
     if (!response.ok) {
         const error = await response.json();
+        toast.error(error.message || 'Something went wrong');
         throw new Error(error.message || 'Something went wrong');
     }
     return response.json();
@@ -26,6 +30,7 @@ export async function getServiceById(serviceId: number) {
     });
     if (!response.ok) {
         const error = await response.json();
+        toast.error(error.message || 'Something went wrong');
         throw new Error(error.message || 'Something went wrong');
     }
     return response.json();
@@ -42,9 +47,12 @@ export async function createService(service: any) {
     });
     if (!response.ok) {
         const error = await response.json();
+        toast.error(error.message || 'Something went wrong');
         throw new Error(error.message || 'Something went wrong');
     }
-    return response.json();
+    const result = await response.json();
+    toast.success('Service created successfully!');
+    return result;
 }
 
 export async function updateService(serviceId: number, service: any) {
@@ -58,9 +66,12 @@ export async function updateService(serviceId: number, service: any) {
     });
     if (!response.ok) {
         const error = await response.json();
+        toast.error(error.message || 'Something went wrong');
         throw new Error(error.message || 'Something went wrong');
     }
-    return response.json();
+    const result = await response.json();
+    toast.success('Service updated successfully!');
+    return result;
 }
 
 export async function deleteService(serviceId: number) {
@@ -73,8 +84,10 @@ export async function deleteService(serviceId: number) {
     });
     if (!response.ok) {
         const error = await response.json();
+        toast.error(error.message || 'Something went wrong');
         throw new Error(error.message || 'Something went wrong');
     }
     // No intentamos parsear la respuesta JSON ya que es un 204 No Content
+    toast.success('Service deleted successfully!');
     return;
 }
