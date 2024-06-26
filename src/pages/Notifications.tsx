@@ -20,39 +20,53 @@ const Notifications: React.FC = () => {
       {
         NotificationId: 1,
         UserId: 101,
-        Message: "Dennisa Nedry requested access to Isla Nublar SOC2 compliance report",
+        title: "Dennisa Nedry",
+        Message: "requested access to",
+        location: "Isla Nublar",
+        report: "SOC2 compliance report",
         IsRead: false,
-        CreatedAt: "Last Wednesday at 9:42 AM",
+        CreatedAt: "Last Wednesday at 9:42 AM"
       },
       {
         NotificationId: 2,
         UserId: 102,
-        Message: "David Nedry requested access to Isla Nublar SOC2 compliance report",
+        title: "David Nedry",
+        Message: "requested access to",
+        location: "Isla Nublar",
+        report: "SOC2 compliance report",
         IsRead: false,
-        CreatedAt: "Last Wednesday at 9:42 AM",
+        CreatedAty: "Last Wednesday at 9:42 AM"
       },
       {
         NotificationId: 3,
         UserId: 103,
-        Message: "Daniel Nedry requested access to Isla Nublar SOC2 compliance report",
+        title: "Daniel Nedry",
+        Message: "requested access to",
+        location: "Isla Nublar",
+        report: "SOC2 compliance report",
         IsRead: true,
-        CreatedAt: "Last Wednesday at 9:42 AM",
+        CreatedAty: "Last Wednesday at 9:42 AM"
       },
       {
         NotificationId: 4,
         UserId: 104,
-        Message: "Alexa Turner requested access to Isla Sorna SOC2 compliance report",
+        title: "Alexa Turner",
+        Message: "requested access to",
+        location: "Isla Sorna",
+        report: "SOC2 compliance report",
         IsRead: true,
-        CreatedAt: "Last Thursday at 10:15 AM",
+        CreatedAty: "Last Thursday at 10:15 AM"
       },
       {
         NotificationId: 5,
         UserId: 105,
-        Message: "Jordan Ellis requested access to Site B environmental impact report",
+        title: "Jordan Ellis",
+        Message: "requested access to",
+        location: "Site B",
+        report: "environmental impact report",
         IsRead: false,
-        CreatedAt: "Last Friday at 11:00 AM",
-      },
-      
+        CreatedAty: "Last Friday at 11:00 AM"
+      }
     ];
   };
 
