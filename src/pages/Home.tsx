@@ -12,16 +12,16 @@ const Home: React.FC = () => {
     const [selectedService, setSelectedService] = useState<any>(null);
     const [isEditMode, setIsEditMode] = useState(false);
 
-    useEffect(() => {
-        const fetchServices = async () => {
-            try {
-                const fetchedServices = await getServices();
-                setServices(fetchedServices);
-            } catch (error) {
-                console.error('Failed to fetch services:', error);
-            }
-        };
+    const fetchServices = async () => {
+        try {
+            const fetchedServices = await getServices();
+            setServices(fetchedServices);
+        } catch (error) {
+            console.error('Failed to fetch services:', error);
+        }
+    };
 
+    useEffect(() => {
         fetchServices();
     }, []);
 
@@ -45,7 +45,7 @@ const Home: React.FC = () => {
     const handleDeleteService = async (serviceId: number) => {
         try {
             await deleteService(serviceId);
-            setServices((prev) => prev.filter((service) => service.serviceId !== serviceId));
+            fetchServices(); // Volver a cargar los servicios después de eliminar
         } catch (error) {
             console.error('Failed to delete service:', error);
         }
@@ -55,12 +55,10 @@ const Home: React.FC = () => {
         try {
             if (isEditMode && selectedService) {
                 await updateService(selectedService.serviceId, service);
-                setServices((prev) =>
-                    prev.map((s) => (s.serviceId === selectedService.serviceId ? service : s))
-                );
+                fetchServices(); // Volver a cargar los servicios después de editar
             } else {
                 const newService = await createService(service);
-                setServices((prev) => [...prev, newService]);
+                fetchServices(); // Volver a cargar los servicios después de agregar
             }
             setIsModalOpen(false);
         } catch (error) {

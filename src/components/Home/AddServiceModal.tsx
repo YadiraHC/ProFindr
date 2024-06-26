@@ -27,14 +27,18 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSu
             setHourlyRate(initialService.hourlyRate || '');
             setDays(initialService.availability ? initialService.availability.split(', ') : []);
         } else {
-            setServiceName('');
-            setServiceDescription('');
-            setState('');
-            setMunicipality('');
-            setHourlyRate('');
-            setDays([]);
+            resetForm();
         }
-    }, [initialService]);
+    }, [initialService, isOpen]);
+
+    const resetForm = () => {
+        setServiceName('');
+        setServiceDescription('');
+        setState('');
+        setMunicipality('');
+        setHourlyRate('');
+        setDays([]);
+    };
 
     const handleDayToggle = (day: string) => {
         setDays((prev) =>
@@ -43,20 +47,20 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSu
     };
 
     const handleSubmit = () => {
-        const availability = days.join(', '); // Convertir el array de días a una cadena
+        const availability = days.join(', ');
 
         const newService = {
             serviceName,
             serviceDescription,
             state,
             municipality,
-            hourlyRate: parseFloat(hourlyRate), // Asegurarse de que sea un número
+            hourlyRate: parseFloat(hourlyRate),
             availability,
-            createdAt: new Date().toISOString(), // Añadir fecha de creación
-            updatedAt: new Date().toISOString()  // Añadir fecha de actualización
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
         };
 
-        console.log("Submitting service:", newService); // Agregar este log
+        console.log("Submitting service:", newService);
 
         onSubmit(newService);
         onClose();
@@ -157,7 +161,7 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSu
                     </div>
                     <button
                         onClick={handleSubmit}
-                        className="w-full md:w-[50%]  bg-[#0A65CC] text-white px-4 py-2 rounded-lg mt-4"
+                        className={`w-full md:w-[50%] px-4 py-2 rounded-lg mt-4 ${!serviceName || !serviceDescription || !state || !municipality || !hourlyRate || days.length === 0 ? 'bg-[#0A65CC] bg-opacity-50 cursor-not-allowed' : 'bg-[#0A65CC] hover:bg-[#084a9b] text-white'}`}
                         disabled={!serviceName || !serviceDescription || !state || !municipality || !hourlyRate || days.length === 0}
                     >
                         {initialService ? 'Update Service' : 'Create Service'}
