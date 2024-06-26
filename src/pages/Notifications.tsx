@@ -72,9 +72,9 @@ const Notifications: React.FC = () => {
         Message: "requested access to",
         location: "Site B",
         report: "environmental impact report",
-        IsRead: false,
+        IsRead: false ,
         CreatedAt: "Last Friday at 11:00 AM",
-        Image:" "
+        Image:""
       }
     ];
   };

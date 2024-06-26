@@ -19,35 +19,39 @@ export const NotificationCard: React.FC<NotificationProps> = ({
   notification,
 }) => {
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md flex ">
-      <div className="flex w-16 h-16 rounded-full mr-sm-0 md:w-8 md:h-8">
-        <img
-          src={notification.Image || defaultImage}
-          alt="Notification Icon"
-          className="w-16 h-16 md:w-6 md:h-6  rounded-full"
-        />
-      </div>
-      <div className="flex-grow">
-        <div>
-          <span className="text-xs font-bold">{notification.title} </span>
-          <span className="text-gray-600 text-xs">{notification.Message} </span>
-          <span className="text-xs font-bold">
-            {notification.location} {notification.report}{" "}
-          </span>
-          <br />
+    <div className="bg-white p-6 rounded-lg shadow-md flex ">
+      <div className="flex space-x-4">{/* para cambiar la linea de separacion de img con cards */}
+        <div className="flex space-x-3 w-16 h-16 rounded-full mr-sm-0 md:w-8 md:h-8">
+          <img
+            src={notification.Image || defaultImage}
+            alt="Notification Icon"
+            className="w-8 h-8 md:w-6 md:h-6  rounded-full"
+          />
         </div>
+        <div className="flex-grow">
+          <div>
+            <span className="text-xs font-bold">{notification.title} </span>
+            <span className="text-gray-600 text-xs">
+              {notification.Message}{" "}
+            </span>
+            <span className="text-xs font-bold">
+              {notification.location} {notification.report}
+            </span>
+            <br />
+          </div>
 
-        <div>
-          <button className="bg-[#0A65CC] text-white px-4 py-1 rounded-lg mr-2">
-            View
-          </button>
-          <button className="bg-[#FFFFFF] text-black px-4 py-1 rounded-lg border border-gray-300">
-            Decline
-          </button>
-        </div>
+          <div>
+            <button className="bg-[#0A65CC] text-white px-4 py-1 rounded-lg mr-2">
+              View
+            </button>
+            <button className="bg-[#FFFFFF] text-black px-4 py-1 rounded-lg border border-gray-300">
+              Decline
+            </button>
+          </div>
 
-        <div>
-          <p className="text-gray-500 text-xs mt-0">{notification.CreatedAt}</p>
+          <div>
+            <p className="text-gray-500 text-xs ">{notification.CreatedAt}</p>
+          </div>
         </div>
       </div>
     </div>
