@@ -1,0 +1,57 @@
+/* src/components/Home/layout/Stepper.css */
+
+.stepper-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin: 0 10px; /* Añadir margen horizontal entre pasos */
+}
+
+.step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #e2e8f0; /* Default gray background */
+    color: black; /* Default black text */
+    z-index: 1; /* Asegurarse de que los números estén por encima de la línea */
+}
+
+.step-number.active {
+    background-color: #0A65CC; /* Active blue background */
+    color: white; /* Active white text */
+}
+
+.step-label {
+    margin-top: 8px;
+    text-align: center;
+}
+
+.step-label.active {
+    font-weight: bold;
+}
+
+
+
+.step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 16px; /* Alinear con el centro vertical del número */
+    left: 80%;
+    width: 50px; /* Ajustar el ancho para dejar espacio a los márgenes */
+    height: 2px;
+    background-color: #cbd5e0; /* Gray border */
+    z-index: 0; /* Asegurarse de que la línea esté por debajo de los números */
+}
