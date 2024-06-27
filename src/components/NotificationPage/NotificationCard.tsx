@@ -21,16 +21,17 @@ export const NotificationCard: React.FC<NotificationProps> = ({
     // Asegurarse de que la imagen no esté vacía ni solo contenga espacios
     const imageSrc = notification.Image.trim() ? notification.Image : defaultImage;
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md flex ">
+    <div className="bg-white p-6 rounded-lg shadow-md flex justify-between items-center relative ">
       <div className="flex space-x-4">{/* para cambiar la linea de separacion de img con cards */}
-        <div className="flex space-x-3 w-16 h-16 rounded-full mr-sm-0 md:w-8 md:h-8">
+        <div className="flex space-x-3 w-16 h-16 rounded-full md:w-8 md:h-8">
           <img
             src={imageSrc}
             alt="Notification Icon"
             className="w-8 h-8 md:w-6 md:h-6  rounded-full"
           />
         </div>
-        <div className="flex-grow">
+
+        <div className="flex-grow margin-bottom-1rem">
           <div>
             <span className="text-xs font-bold">{notification.title} </span>
             <span className="text-gray-600 text-xs">
@@ -42,7 +43,7 @@ export const NotificationCard: React.FC<NotificationProps> = ({
             <br />
           </div>
 
-          <div>
+          <div className="flex-grow margin-bottom-1rem">
             <button className="bg-[#0A65CC] text-white px-3 py-1 rounded-lg mr-2">
               View
             </button>
@@ -51,7 +52,7 @@ export const NotificationCard: React.FC<NotificationProps> = ({
             </button>
           </div>
 
-          <div>
+          <div className="flex-grow margin-bottom-1rem">
             <p className="text-gray-500 text-xs ">{notification.CreatedAt}</p>
           </div>
         </div>

@@ -43,39 +43,39 @@ const Notifications: React.FC = () => {
         CreatedAt: "Last Wednesday at 9:42 AM",
         Image:"https://images.pexels.com/users/avatars/551816/george-dolgikh-561.jpeg?auto=compress&fit=crop&h=130&w=130&dpr=1"
       },
-      {
-        NotificationId: 3,
-        UserId: 103,
-        title: "Daniel Nedry",
-        Message: "requested access to",
-        location: "Isla Nublar",
-        report: "SOC2 compliance report",
-        IsRead: true,
-        CreatedAt: "Last Wednesday at 9:42 AM",
-        Image:"https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-      },
-      {
-        NotificationId: 4,
-        UserId: 104,
-        title: "Alexa Turner",
-        Message: "requested access to",
-        location: "Isla Sorna",
-        report: "SOC2 compliance report",
-        IsRead: true,
-        CreatedAt: "Last Thursday at 10:15 AM",
-        Image:"https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-      },
-      {
-        NotificationId: 5,
-        UserId: 105,
-        title: "Jordan Ellis",
-        Message: "requested access to",
-        location: "Site B",
-        report: "environmental impact report",
-        IsRead: false ,
-        CreatedAt: "Last Friday at 11:00 AM",
-        Image:" "
-      }
+      // {
+      //   NotificationId: 3,
+      //   UserId: 103,
+      //   title: "Daniel Nedry",
+      //   Message: "requested access to",
+      //   location: "Isla Nublar",
+      //   report: "SOC2 compliance report",
+      //   IsRead: true,
+      //   CreatedAt: "Last Wednesday at 9:42 AM",
+      //   Image:"https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      // },
+      // {
+      //   NotificationId: 4,
+      //   UserId: 104,
+      //   title: "Alexa Turner",
+      //   Message: "requested access to",
+      //   location: "Isla Sorna",
+      //   report: "SOC2 compliance report",
+      //   IsRead: true,
+      //   CreatedAt: "Last Thursday at 10:15 AM",
+      //   Image:"https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      // },
+      // {
+      //   NotificationId: 5,
+      //   UserId: 105,
+      //   title: "Jordan Ellis",
+      //   Message: "requested access to",
+      //   location: "Site B",
+      //   report: "environmental impact report",
+      //   IsRead: false ,
+      //   CreatedAt: "Last Friday at 11:00 AM",
+      //   Image:" "
+      // }
     ];
   };
 
@@ -84,11 +84,11 @@ const Notifications: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex bg-[#F7F7F8]">
+    <div className="flex bg-[#F7F7F8] min-h-screen">
       <div className="hidden md:block">
         <SideMenu />
       </div>
-      <div className="flex-1 p-8">
+      <div className="flex-1 p-8 md:ml-64 overflow-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">Notifications</h1>
         </div>
