@@ -15,14 +15,13 @@ const jobs = [
     { title: 'Beauty', location: 'Cancún, Q. Roo', views: 200, type: 'Contract', price: 800, rating: 4.8, color: '#E4BFFA' },
 ];
 
-
 const FindWork: React.FC = () => {
     return (
-        <div className="flex bg-[#F7F7F8]">
-            <div className="hidden md:block">
+        <div className="flex bg-[#F7F7F8] min-h-screen">
+            <div className="hidden md:block fixed">
                 <SideMenu />
             </div>
-            <div className="flex flex-col space-y-4 p-10 w-full">
+            <div className="flex flex-col space-y-4 p-10 w-full md:ml-64">
                 <div>
                     <SearchBar />
                 </div>
