@@ -36,8 +36,12 @@ const CardJob: React.FC<CardJobProps> = ({ job }) => {
                     </div>
                 </div>
             </div>
-            <div className="mt-2">
-                <p className="text-[#1c1e1f] font-semibold ml-1">{`$${job.price} /hour`}</p>
+            <div className="mt-2.5 flex flex-row">
+                <p className="text-[#1c1e1f] text-lg mt-1.5 font-semibold ml-1">{job.price}</p>
+                <p className='mt-2'>/Hour</p>
+                <button type="button" className="ml-6 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 font-normal rounded-lg text-sm px-3.5 py-2.5 me-2 dark:border-gray-700">
+                    See Details
+                </button>
             </div>
         </div>
     );
