@@ -23,7 +23,7 @@ export const NotificationCard: React.FC<NotificationProps> = ({
   return (
     <div className="bg-white p-6 rounded-lg shadow-md flex justify-between items-center relative ">
       <div className="flex space-x-4">{/* para cambiar la linea de separacion de img con cards */}
-        <div className="flex space-x-3 w-16 h-16 rounded-full md:w-8 md:h-8">
+        <div className="flex space-x-3 w-10 h-16 rounded-full md:w-8 md:h-8">
           <img
             src={imageSrc}
             alt="Notification Icon"
@@ -32,7 +32,7 @@ export const NotificationCard: React.FC<NotificationProps> = ({
         </div>
 
         <div className="flex-grow ">
-          <div>
+          <div className="mb-4">
             <span className="text-xs font-bold">{notification.title} </span>
             <span className="text-gray-600 text-xs">
               {notification.Message}{" "}
