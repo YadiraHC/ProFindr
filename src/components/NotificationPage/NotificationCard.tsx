@@ -31,7 +31,7 @@ export const NotificationCard: React.FC<NotificationProps> = ({
           />
         </div>
 
-        <div className="flex-grow margin-bottom-1rem">
+        <div className="flex-grow ">
           <div>
             <span className="text-xs font-bold">{notification.title} </span>
             <span className="text-gray-600 text-xs">
@@ -43,7 +43,7 @@ export const NotificationCard: React.FC<NotificationProps> = ({
             <br />
           </div>
 
-          <div className="flex-grow margin-bottom-1rem">
+          <div className="flex-grow mb-1">
             <button className="bg-[#0A65CC] text-white px-3 py-1 rounded-lg mr-2">
               View
             </button>
@@ -52,7 +52,7 @@ export const NotificationCard: React.FC<NotificationProps> = ({
             </button>
           </div>
 
-          <div className="flex-grow margin-bottom-1rem">
+          <div className="flex-grow ">
             <p className="text-gray-500 text-xs ">{notification.CreatedAt}</p>
           </div>
         </div>
