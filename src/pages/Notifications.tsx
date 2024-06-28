@@ -15,7 +15,10 @@ type Notification = {
   Image: string;
 };
 
-const fetchNotifications = (page: number): Notification[] => {
+const fetchNotifications = async (page: number): Promise<Notification[]> => {
+  // Simular un retraso de 2 segundos
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   // Simulando la obtención de nuevas notificaciones según la página
   const newNotifications = [
     {
@@ -76,7 +79,7 @@ const fetchNotifications = (page: number): Notification[] => {
   ];
 
   // Simular el fin de las notificaciones después de 20 páginas
-  if (page >= 5) {
+  if (page >= 10) {
     return [];
   }
 
@@ -89,8 +92,8 @@ const Notifications: React.FC = () => {
   const [page, setPage] = useState(1);
   const loader = useRef<HTMLDivElement | null>(null);
 
-  const fetchMoreNotifications = useCallback(() => {
-    const newNotifications = fetchNotifications(page);
+  const fetchMoreNotifications = useCallback(async () => {
+    const newNotifications = await fetchNotifications(page);
     setNotifications((prevNotifications) => [...prevNotifications, ...newNotifications]);
     setPage(page + 1);
     if (newNotifications.length === 0) {
