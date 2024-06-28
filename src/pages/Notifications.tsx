@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
 import SideMenu from "../components/common/SideMenu";
-import { NotificationCard } from "../components/NotificationPage/NotificationCard";
+
+const NotificationCard = lazy(() => import("../components/NotificationPage/NotificationCard"));
 
 // Definición de tipos para la notificación
 type Notification = {
@@ -78,7 +79,7 @@ const fetchNotifications = async (page: number): Promise<Notification[]> => {
     }
   ];
 
-  // Simular el fin de las notificaciones después de 20 páginas
+  // Simular el fin de las notificaciones después de 10 páginas
   if (page >= 10) {
     return [];
   }
@@ -143,12 +144,14 @@ const Notifications: React.FC = () => {
           <h1 className="text-2xl font-bold">Notifications</h1>
         </div>
         <div className="space-y-4">
-          {notifications.map((notification) => (
-            <NotificationCard
-              key={notification.NotificationId}
-              notification={notification}
-            />
-          ))}
+          <Suspense fallback={<div>Loading...</div>}>
+            {notifications.map((notification) => (
+              <NotificationCard
+                key={notification.NotificationId}
+                notification={notification}
+              />
+            ))}
+          </Suspense>
           <div ref={loader}>
             {hasMore && <h4>Loading...</h4>}
           </div>
