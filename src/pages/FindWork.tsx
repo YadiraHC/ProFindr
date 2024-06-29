@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SideMenu from '../components/common/SideMenu';
 import SearchBar from '../components/FindWork/SearchBar';
 import TagsFilter from '../components/FindWork/TagsFilter';
 import CardJobs from '../components/FindWork/CardJobs';
+import SeeDetailsModal from '../components/FindWork/SeeDetailsModal';
 
-const jobs = [
+interface Job {
+    title: string;
+    rating?: number;
+    views: number;
+    location: string;
+    type: string;
+    price: number;
+    color: string;
+}
+
+const jobs: Job[] = [
     { title: 'Construction & Maintenance', location: 'Cancún, Q. Roo', views: 150, type: 'Full-time', price: 600, rating: 4.5, color: '#DDF0FD' },
     { title: 'Home Cleaning & Maintenance', location: 'Cancún, Q. Roo', views: 90, type: 'Part-time', price: 400, rating: 4.2, color: '#FFE3D9' },
     { title: 'Legal & Professional Services', location: 'Cancún, Q. Roo', views: 200, type: 'Contract', price: 800, rating: 4.8, color: '#FDF4D8' },
@@ -16,6 +27,18 @@ const jobs = [
 ];
 
 const FindWork: React.FC = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+
+    const openModal = (job: Job) => {
+        setSelectedJob(job);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <div className="flex bg-[#F7F7F8] min-h-screen">
             <div className="hidden md:block fixed">
@@ -39,10 +62,13 @@ const FindWork: React.FC = () => {
                         `}
                     </style>
                     {jobs.map((job, index) => (
-                        <CardJobs key={index} job={job} />
+                        <CardJobs key={index} job={job} openModal={() => openModal(job)} />
                     ))}
                 </div>
             </div>
+            {selectedJob && (
+                <SeeDetailsModal isOpen={isModalOpen} closeModal={closeModal} job={selectedJob} />
+            )}
         </div>
     );
 };
