@@ -1,5 +1,5 @@
 import React from 'react';
-/* Cars fijas estamos en 1 2 y 4 */
+
 interface CardJobProps {
     job: {
         title: string;
@@ -10,9 +10,10 @@ interface CardJobProps {
         price: number;
         color: string;
     };
+    openModal: () => void;
 }
 
-const CardJob: React.FC<CardJobProps> = ({ job }) => {
+const CardJob: React.FC<CardJobProps> = ({ job, openModal }) => {
     return (
         <div className="block w-full sm:w-64 p-3 bg-white rounded-3xl border border-gray-200 shadow-md">
             <div className="flex flex-col rounded-3xl" style={{ height: '250px', width: '100%', backgroundColor: job.color }}>
@@ -37,9 +38,13 @@ const CardJob: React.FC<CardJobProps> = ({ job }) => {
                 </div>
             </div>
             <div className="mt-2.5 flex flex-row">
-                <p className="text-[#1c1e1f] text-lg mt-1.5 font-semibold ml-1">{job.price}</p>
+                <p className="text-[#1c1e1f] text-lg mt-1.5 font-semibold ml-3">${job.price}</p>
                 <p className='mt-2'>/Hour</p>
-                <button type="button" className="ml-6 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 font-normal rounded-lg text-sm px-3.5 py-2.5 me-2 dark:border-gray-700">
+                <button
+                    type="button"
+                    className="ml-3 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 font-normal rounded-lg text-sm px-3.5 py-2.5 me-2 dark:border-gray-700"
+                    onClick={openModal}
+                >
                     See Details
                 </button>
             </div>
