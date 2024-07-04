@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import SideMenu from '../components/common/SideMenu';
+import NavbarApp from '../components/common/NavbarApp';
 import ServiceCard from '../components/Home/ServiceCard';
 import AddServiceModal from '../components/Home/AddServiceModal';
 import Step1 from '../components/Home/layout/Step1';
@@ -17,6 +18,7 @@ const Home: React.FC = () => {
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
     const fetchServices = async () => {
         try {
@@ -91,7 +93,7 @@ const Home: React.FC = () => {
             console.error('Failed to submit service:', error);
         }
     };
-
+    
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -99,22 +101,25 @@ const Home: React.FC = () => {
     if (error) {
         return (
             <div className="flex bg-[#F7F7F8] min-h-screen">
-                <div className="hidden md:block">
-                    <SideMenu />
-                </div>
+                <NavbarApp onMenuClick={() => setIsSideMenuOpen(true)} />
+            <div className="hidden md:block">
+                <SideMenu isOpen={true} onClose={() => setIsSideMenuOpen(false)} />
+            </div>
                 <div className="flex-1 p-8 md:ml-64 overflow-auto">
                     <div className="text-red-500">{error}</div>
                 </div>
             </div>
         );
     }
-
+    
     return (
-        <div className="flex bg-[#F7F7F8] min-h-screen"> {/* Asegurar que el fondo cubra toda la pantalla */}
+        <div className="lg:flex bg-[#F7F7F8] min-h-screen">
+            <NavbarApp onMenuClick={() => setIsSideMenuOpen(true)} />
             <div className="hidden md:block">
-                <SideMenu />
+                <SideMenu isOpen={true} onClose={() => setIsSideMenuOpen(false)} />
             </div>
-            <div className="flex-1 p-8 md:ml-64 overflow-auto"> {/* Añadir overflow-auto para permitir el desplazamiento */}
+            <SideMenu isOpen={isSideMenuOpen} onClose={() => setIsSideMenuOpen(false)} />
+            <div className="lg:flex-1 p-8 md:ml-64 overflow-auto">
                 {step === 1 ? (
                     <>
                         <Stepper step={step} />

@@ -1,4 +1,4 @@
-// src/common/SideMenu.tsx
+// src/components/common/SideMenu.tsx
 
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -12,12 +12,23 @@ const menuItems = [
     { name: 'Notification', icon: 'mail', path: '/notifications' }
 ];
 
-const SideMenu: React.FC = () => {
+interface SideMenuProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
     return (
-        <aside className="fixed top-0 left-0 h-full w-64 bg-white px-4 py-8 border-r overflow-y-auto">
+        <aside className={`fixed top-0 left-0 h-full w-full md:w-64 bg-white px-4 py-8 border-r overflow-y-auto z-50 transition-transform transform ${isOpen ? 'translate-y-0' : '-translate-y-full'} md:translate-y-0`}>
+            <div className="flex items-center justify-between mb-8 md:hidden">
+                <h1 className="text-xl font-bold">Menu</h1>
+                <button onClick={onClose} className="text-gray-600">
+                    <span className="material-icons">close</span>
+                </button>
+            </div>
             <div className="flex items-center mb-8">
                 <img src="./images/Logo.png" alt="ProFindr Logo" className="h-10 mr-3" />
                 <span className="text-xl font-bold">ProFindr</span>
