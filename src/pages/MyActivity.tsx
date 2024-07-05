@@ -10,7 +10,8 @@ type Activity = {
   };
 const ActivityCard = ({ activity }) => {
     return (
-      <div className="bg-white p-6 rounded-lg shadow-md flex justify-between items-center relative">
+        <>
+        <div className="bg-white p-6 rounded-lg shadow-md flex justify-between items-center relative">
         <div className="flex space-x-4">
           <div className="flex-grow">
             <div className="mb-4">
@@ -27,6 +28,8 @@ const ActivityCard = ({ activity }) => {
           </div>
         </div>
       </div>
+        </>
+      
     );
   };
 // fin de componente para exportar despues  
@@ -112,8 +115,15 @@ const MyActivity: React.FC = () => {
   return (
     <div className="lg:flex bg-[#F7F7F8] min-h-screen">
       <NavbarApp onMenuClick={() => setIsSideMenuOpen(true)} />
-      <SideMenu isOpen={isSideMenuOpen} onClose={() => setIsSideMenuOpen(false)} />
-      <div className="flex-1 p-8 overflow-auto">
+      <div className="hidden md:block">
+      <SideMenu isOpen={true} onClose={() => setIsSideMenuOpen(false)} />
+      </div>
+      {isSideMenuOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <SideMenu isOpen={isSideMenuOpen} onClose={() => setIsSideMenuOpen(false)} />
+        </div>
+      )}
+      <div className="flex-1 md:ml-64 p-8 overflow-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">My Activities</h1>
         </div>
@@ -125,8 +135,6 @@ const MyActivity: React.FC = () => {
                 activity={activity}
               />
             ))}
-
-            
           </Suspense>
           <div ref={loader}>
             {hasMore && <h4>Loading...</h4>}
