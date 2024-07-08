@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SideMenu from '../components/common/SideMenu';
+import NavbarApp from '../components/common/NavbarApp';
 import SearchBar from '../components/FindWork/SearchBar';
 import TagsFilter from '../components/FindWork/TagsFilter';
 import CardJobs from '../components/FindWork/CardJobs';
@@ -29,6 +30,7 @@ const jobs: Job[] = [
 const FindWork: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+    const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
     const openModal = (job: Job) => {
         setSelectedJob(job);
@@ -40,11 +42,13 @@ const FindWork: React.FC = () => {
     };
 
     return (
-        <div className="flex bg-[#F7F7F8] min-h-screen">
+        <div className="lg:flex bg-[#F7F7F8] min-h-screen">
+            <NavbarApp onMenuClick={() => setIsSideMenuOpen(true)} />
             <div className="hidden md:block fixed">
-                <SideMenu />
+                <SideMenu isOpen={true} onClose={() => setIsSideMenuOpen(false)} />
             </div>
-            <div className="flex flex-col space-y-4 p-10 w-full md:ml-64">
+            <SideMenu isOpen={isSideMenuOpen} onClose={() => setIsSideMenuOpen(false)} />
+            <div className="lg:flex-1 p-8 md:ml-64 overflow-auto">
                 <div>
                     <SearchBar />
                 </div>
