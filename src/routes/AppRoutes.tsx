@@ -1,5 +1,7 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import LandingPage from '../pages/LandingPage';
 import Register from '../pages/Register';
 import Login from '../pages/Login';
@@ -13,22 +15,40 @@ import Notifications from '../pages/Notifications';
 import Settings from '../pages/Settings';
 import MyProfile from '../pages/MyProfile';
 import ProtectedRoute from '../components/common/ProtectedRoute';
+import PublicRoute from '../components/common/PublicRoute';
+
+const NotFoundRedirect = () => {
+    const navigate = useNavigate();
+    React.useEffect(() => {
+        
+        setTimeout(() => {
+            navigate('/home');
+            toast.error('Page not found, redirecting to home...');
+        }, 1000);
+    }, [navigate]);
+
+    return null;
+};
 
 const AppRoutes = () => (
-    <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/reset" element={<ResetPassword />} />
-        <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-        <Route path="/find-work" element={<ProtectedRoute element={<FindWork />} />} />
-        <Route path="/my-jobs" element={<ProtectedRoute element={<MyJobs />} />} />
-        <Route path="/my-activity" element={<ProtectedRoute element={<MyActivity />} />} />
-        <Route path="/messages" element={<ProtectedRoute element={<Messages />} />} />
-        <Route path="/notifications" element={<ProtectedRoute element={<Notifications />} />} />
-        <Route path="/settings" element={<ProtectedRoute element={<Settings />} />} />
-        <Route path="/my-profile" element={<ProtectedRoute element={<MyProfile />} />} />
-    </Routes>
+    <>
+        <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/register" element={<PublicRoute element={<Register />} />} />
+            <Route path="/login" element={<PublicRoute element={<Login />} />} />
+            <Route path="/reset" element={<PublicRoute element={<ResetPassword />} />} />
+            <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
+            <Route path="/find-work" element={<ProtectedRoute element={<FindWork />} />} />
+            <Route path="/my-jobs" element={<ProtectedRoute element={<MyJobs />} />} />
+            <Route path="/my-activity" element={<ProtectedRoute element={<MyActivity />} />} />
+            <Route path="/messages" element={<ProtectedRoute element={<Messages />} />} />
+            <Route path="/notifications" element={<ProtectedRoute element={<Notifications />} />} />
+            <Route path="/settings" element={<ProtectedRoute element={<Settings />} />} />
+            <Route path="/my-profile" element={<ProtectedRoute element={<MyProfile />} />} />
+            <Route path="*" element={<NotFoundRedirect />} />
+        </Routes>
+        <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+    </>
 );
 
 export default AppRoutes;
