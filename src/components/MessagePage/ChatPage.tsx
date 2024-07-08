@@ -2,7 +2,7 @@ import React from 'react';
 
 const ChatPage: React.FC = () => {
     return (
-        <div className="flex flex-col w-full md:w-3/4 pl-0">
+        <div className="flex flex-col w-full md:w-3/4 pl-0 h-full">
             <div className="flex items-center justify-between p-4 bg-gray-100 border-b">
                 <div className="flex items-center">
                     <img
@@ -30,7 +30,7 @@ const ChatPage: React.FC = () => {
                     ></path>
                 </svg>
             </div>
-            <div className="flex-1 overflow-auto p-4 h-[calc(100vh-200px)]">
+            <div className="flex-1 overflow-auto p-4 h-[calc(100vh-200px)] md:h-full">
                 <div className="flex justify-center mb-4">
                     <span className="bg-gray-300 text-xs text-gray-800 py-1 px-2 rounded-full">Today</span>
                 </div>
@@ -38,7 +38,7 @@ const ChatPage: React.FC = () => {
                     <div className="text-left">
                         <span className="bg-gray-200 p-4 rounded-tl-lg rounded-tr-lg rounded-br-lg inline-block relative">
                             See you at office tomorrow!
-                            <span className="text-xs text-gray-500 absolute bottom-0 right-0 mr-2 md-1">
+                            <span className="text-xs text-gray-500 absolute bottom-0 right-0 mr-2 mb-1">
                                 15:42
                             </span>
                         </span>
@@ -46,7 +46,7 @@ const ChatPage: React.FC = () => {
                     <div className="text-right mt-4">
                         <span className="bg-blue-500 text-white p-4 rounded-tl-lg rounded-tr-lg rounded-bl-lg inline-block relative">
                             Thank you for work, see you!
-                            <span className="text-xs text-gray-300 absolute bottom-0 right-0 mr-2 md-1">
+                            <span className="text-xs text-gray-300 absolute bottom-0 right-0 mr-2 mb-1">
                                 15:42
                             </span>
                         </span>
@@ -61,7 +61,7 @@ const ChatPage: React.FC = () => {
                     <div className="text-left">
                         <span className="bg-gray-200 p-4 rounded-tl-lg rounded-tr-lg rounded-br-lg inline-block relative">
                             Hello! Have you seen my backpack anywhere in office?
-                            <span className="text-xs text-gray-500 absolute bottom-0 left-2 ml-2 md-1">
+                            <span className="text-xs text-gray-500 absolute bottom-0 left-2 ml-2 mb-1">
                                 15:42
                             </span>
                         </span>
@@ -70,7 +70,7 @@ const ChatPage: React.FC = () => {
                 <div className="text-right mt-4">
                     <span className="bg-blue-500 text-white p-4 rounded-tl-lg rounded-tr-lg rounded-bl-lg inline-block relative">
                         Hi, yes, David have found it, ask our concierge 😊
-                        <span className="text-xs text-gray-300 absolute bottom-0 right-0 mr-2 md-1">
+                        <span className="text-xs text-gray-300 absolute bottom-0 right-0 mr-2 mb-1">
                             15:42
                         </span>
                     </span>
