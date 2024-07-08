@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { logoutUser } from '../../services/userService';
 
 const menuItems = [
     { name: 'Home', icon: 'home', path: '/home' },
@@ -30,6 +31,16 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose }) => {
     const handleClickOutside = (event: MouseEvent) => {
         if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
             setIsProfileDropdownOpen(false);
+        }
+    };
+
+    const handleLogout = async () => {
+        try {
+            await logoutUser();
+            localStorage.removeItem('token');
+            navigate('/login');
+        } catch (err: any) {
+            console.error(err.message);
         }
     };
 
@@ -76,7 +87,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose }) => {
                 {isProfileDropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50">
                         <button className="block px-4 py-2 text-left w-full" onClick={() => navigate('/my-profile')}>View Account</button>
-                        <button className="block px-4 py-2 text-left w-full text-red-500" onClick={() => console.log('Logging out...')}>Logout</button>
+                        <button className="block px-4 py-2 text-left w-full text-red-500" onClick={handleLogout}>Logout</button>
                     </div>
                 )}
             </div>
