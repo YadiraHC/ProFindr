@@ -19,3 +19,4 @@ const NavbarApp: React.FC<NavbarAppProps> = ({ onMenuClick }) => {
 };
 
 export default NavbarApp;
+
