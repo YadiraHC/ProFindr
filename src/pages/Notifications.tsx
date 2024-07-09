@@ -1,92 +1,9 @@
 import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
 import SideMenu from "../components/common/SideMenu";
 import NavbarApp from '../components/common/NavbarApp';
+import { fetchNotifications, Notification } from "../components/NotificationPage/notificationService";
 
 const NotificationCard = lazy(() => import("../components/NotificationPage/NotificationCard"));
-
-// Definición de tipos para la notificación
-type Notification = {
-  NotificationId: number;
-  UserId: number;
-  title: string;
-  Message: string;
-  location: string;
-  report: string;
-  IsRead: boolean;
-  CreatedAt: string;
-  Image: string;
-};
-
-const fetchNotifications = async (page: number): Promise<Notification[]> => {
-  // Simular un retraso de 2 segundos
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
-  // Simulando la obtención de nuevas notificaciones según la página
-  const newNotifications = [
-    {
-      NotificationId: page * 1,
-      UserId: 99,
-      title: "Dennisa Nedry",
-      Message: "requested access to",
-      location: "Isla Nublar",
-      report: "SOC2 compliance report",
-      IsRead: false,
-      CreatedAt: "Last Wednesday at 9:42 AM",
-      Image: "https://images.pexels.com/photos/1310522/pexels-photo-1310522.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-    },
-    {
-      NotificationId: page * 2,
-      UserId: 100,
-      title: "David Nedry",
-      Message: "requested access to",
-      location: "Isla Nublar",
-      report: "SOC2 compliance report",
-      IsRead: false,
-      CreatedAt: "Last Wednesday at 9:42 AM",
-      Image: "https://images.pexels.com/users/avatars/551816/george-dolgikh-561.jpeg?auto=compress&fit=crop&h=130&w=130&dpr=1"
-    },
-    {
-      NotificationId: 3,
-      UserId: 101,
-      title: "Daniel Nedry",
-      Message: "requested access to",
-      location: "Isla Nublar",
-      report: "SOC2 compliance report",
-      IsRead: true,
-      CreatedAt: "Last Wednesday at 9:42 AM",
-      Image: "https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-    },
-    {
-      NotificationId: 4,
-      UserId: 104,
-      title: "Alexa Turner",
-      Message: "requested access to",
-      location: "Isla Sorna",
-      report: "SOC2 compliance report",
-      IsRead: true,
-      CreatedAt: "Last Thursday at 10:15 AM",
-      Image: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-    },
-    {
-      NotificationId: 5,
-      UserId: 105,
-      title: "Jordan Ellis",
-      Message: "requested access to",
-      location: "Site B",
-      report: "environmental impact report",
-      IsRead: false,
-      CreatedAt: "Last Friday at 11:00 AM",
-      Image: ""
-    }
-  ];
-
-  // Simular el fin de las notificaciones después de 10 páginas
-  if (page >= 10) {
-    return [];
-  }
-
-  return newNotifications;
-};
 
 const Notifications: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -94,7 +11,6 @@ const Notifications: React.FC = () => {
   const [page, setPage] = useState(1);
   const loader = useRef<HTMLDivElement | null>(null);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
-
 
   const fetchMoreNotifications = useCallback(async () => {
     const newNotifications = await fetchNotifications(page);
@@ -137,12 +53,21 @@ const Notifications: React.FC = () => {
     };
   }, [fetchMoreNotifications, hasMore]);
 
+  const handleDelete = (id: number) => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.map(notification =>
+        notification.NotificationId === id
+          ? { ...notification, isVisible: false }
+          : notification
+      )
+    );
+  };
+
   return (
     <div className="lg:flex bg-[#F7F7F8] min-h-screen">
-            <NavbarApp onMenuClick={() => setIsSideMenuOpen(true)} />
-
+      <NavbarApp onMenuClick={() => setIsSideMenuOpen(true)} />
       <div className="hidden md:block">
-      <SideMenu isOpen={true} onClose={() => setIsSideMenuOpen(false)} />
+        <SideMenu isOpen={true} onClose={() => setIsSideMenuOpen(false)} />
       </div>
       {isSideMenuOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
@@ -150,18 +75,20 @@ const Notifications: React.FC = () => {
         </div>
       )}
       <div className="flex-1 p-8 md:ml-64 overflow-auto">
-        
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">Notifications</h1>
         </div>
         <div className="space-y-4">
           <Suspense fallback={<div>Loading...</div>}>
-            {notifications.map((notification) => (
-              <NotificationCard
-                key={notification.NotificationId}
-                notification={notification}
-              />
-            ))}
+            {notifications.map((notification) =>
+              notification.isVisible && (
+                <NotificationCard
+                  key={notification.NotificationId}
+                  notification={notification}
+                  onDelete={handleDelete}
+                />
+              )
+            )}
           </Suspense>
           <div ref={loader}>
             {hasMore && <h4>Loading...</h4>}

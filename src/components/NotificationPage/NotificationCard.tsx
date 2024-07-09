@@ -12,12 +12,14 @@ type NotificationProps = {
     CreatedAt: string;
     Image: string; // Nueva propiedad opcional para la imagen específica de la notificación
   };
+  onDelete: (id: number) => void;
 };
 
 const defaultImage = "https://cdn-icons-png.flaticon.com/128/9131/9131646.png"; // Aquí va tu imagen base64
 
 export const NotificationCard: React.FC<NotificationProps> = ({
   notification,
+  onDelete
 }) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -82,11 +84,14 @@ export const NotificationCard: React.FC<NotificationProps> = ({
             <div className="flex-grow mb-1">
               <button
                 className="bg-[#0A65CC] text-white px-3 py-1 rounded-lg mr-2"
-                /* onClick={() => setShowModal(true)} */
+                onClick={() => setShowModal(true)}
               >
                 View
               </button>
-              <button className="bg-[#FFFFFF] text-black px-3 py-1 rounded-lg border border-gray-300">
+              <button
+                className="bg-[#FFFFFF] text-black px-3 py-1 rounded-lg border border-gray-300"
+                onClick={() => onDelete(notification.NotificationId)}
+              >
                 Decline
               </button>
             </div>
