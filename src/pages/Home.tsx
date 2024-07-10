@@ -1,5 +1,3 @@
-// src/pages/Home.tsx
-
 import React, { useState, useEffect } from 'react';
 import SideMenu from '../components/common/SideMenu';
 import NavbarApp from '../components/common/NavbarApp';
@@ -15,7 +13,7 @@ const Home: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedService, setSelectedService] = useState<any>(null);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [step, setStep] = useState(1);
+    const [showStep1, setShowStep1] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
@@ -32,23 +30,23 @@ const Home: React.FC = () => {
 
     const fetchProfessionalInfo = async () => {
         try {
-            const info = await getProfessionalInfo();
-            console.log('Professional info:', info);
-            setStep(2); // Suponiendo que después de obtener la información, el paso siguiente es 2
+            const response = await getProfessionalInfo();
+            console.log('Professional info:', response);
+            if (!response.professionalInfo) {
+                setShowStep1(true);
+            } else {
+                setShowStep1(false);
+                fetchServices();
+            }
         } catch (error) {
             console.error('Failed to fetch professional info:', error);
-            if ((error as Error).message === 'Professional not found') {
-                setStep(1);
-            } else {
-                setError((error as Error).message);
-            }
+            setError((error as Error).message);
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchServices();
         fetchProfessionalInfo();
     }, []);
 
@@ -93,7 +91,7 @@ const Home: React.FC = () => {
             console.error('Failed to submit service:', error);
         }
     };
-    
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -102,16 +100,16 @@ const Home: React.FC = () => {
         return (
             <div className="flex bg-[#F7F7F8] min-h-screen">
                 <NavbarApp onMenuClick={() => setIsSideMenuOpen(true)} />
-            <div className="hidden md:block">
-                <SideMenu isOpen={true} onClose={() => setIsSideMenuOpen(false)} />
-            </div>
+                <div className="hidden md:block">
+                    <SideMenu isOpen={true} onClose={() => setIsSideMenuOpen(false)} />
+                </div>
                 <div className="flex-1 p-8 md:ml-64 overflow-auto">
                     <div className="text-red-500">{error}</div>
                 </div>
             </div>
         );
     }
-    
+
     return (
         <div className="lg:flex bg-[#F7F7F8] min-h-screen">
             <NavbarApp onMenuClick={() => setIsSideMenuOpen(true)} />
@@ -120,9 +118,9 @@ const Home: React.FC = () => {
             </div>
             <SideMenu isOpen={isSideMenuOpen} onClose={() => setIsSideMenuOpen(false)} />
             <div className="lg:flex-1 p-8 md:ml-64 overflow-auto">
-                {step === 1 ? (
+                {showStep1 ? (
                     <>
-                        <Stepper step={step} />
+                        <Stepper step={1} />
                         <Step1 />
                     </>
                 ) : (
