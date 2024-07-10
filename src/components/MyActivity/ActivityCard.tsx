@@ -1,5 +1,3 @@
-// src/components/MyActivity/ActivityCard.tsx
-
 import React, { useState } from "react";
 
 type ActivityProps = {
@@ -8,43 +6,22 @@ type ActivityProps = {
     ServiceName: string;
     Date: string;
     PersonName: string;
+    Description: string;
+    StartDate: string;
+    EndDate: string;
+    HourlyRate: string;
+    Days: string;
+    State: string;
+    Municipality: string;
+    CustomerName: string;
+    Rating: number; // Nueva propiedad
+    Review: string; // Nueva propiedad
   };
 };
 
 const ActivityCard: React.FC<ActivityProps> = ({ activity }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const styles = {
-    modal: {
-      position: "fixed",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 1000,
-    } as React.CSSProperties,
-    modalContent: {
-      backgroundColor: "#fff",
-      padding: "20px",
-      borderRadius: "8px",
-      position: "relative",
-      maxWidth: "500px",
-      width: "100%",
-      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    } as React.CSSProperties,
-    close: {
-      position: "absolute",
-      top: "10px",
-      right: "10px",
-      fontSize: "1.5rem",
-      cursor: "pointer",
-    } as React.CSSProperties,
-  };
-  
   return (
     <>
       <div className="bg-white p-6 rounded-lg shadow-md flex justify-between items-center relative">
@@ -68,14 +45,41 @@ const ActivityCard: React.FC<ActivityProps> = ({ activity }) => {
         </div>
       </div>
       {showModal && (
-        <div style={styles.modal}>
-          <div style={styles.modalContent}>
-            <span style={styles.close} onClick={() => setShowModal(false)}>
-              &times;
-            </span>
-            <h2>{activity.ServiceName}</h2>
-            <p>Fecha: {activity.Date}</p>
-            <p>Persona: {activity.PersonName}</p>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+          <div className="bg-white md:rounded-lg shadow-lg p-8 w-full md:w-3/5 lg:w-1/2 max-h-full overflow-y-auto">
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-gray-500 hover:text-gray-700 focus:outline-none"
+              >
+                <span className="material-icons">close</span>
+              </button>
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold mb-4">{activity.ServiceName}</h2>
+              <p className="text-gray-600 mb-2"><strong>Description: </strong>{activity.Description}</p>
+              <p className="text-gray-600 mb-2"><strong>Start Date: </strong>{activity.StartDate}</p>
+              <p className="text-gray-600 mb-2"><strong>End Date: </strong>{activity.EndDate}</p>
+              <p className="text-gray-600 mb-2"><strong>Hourly Rate: </strong>{activity.HourlyRate}</p>
+              <p className="text-gray-600 mb-2"><strong>Days: </strong>{activity.Days}</p>
+              <p className="text-gray-600 mb-2"><strong>State: </strong>{activity.State}</p>
+              <p className="text-gray-600 mb-2"><strong>Municipality: </strong>{activity.Municipality}</p>
+              <p className="text-gray-600 mb-2"><strong>Customer Name: </strong>{activity.CustomerName}</p>
+              <div className="mt-4">
+                <h3 className="text-lg font-bold">Rating:</h3>
+                <div className="flex items-center">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span
+                      key={star}
+                      className={`text-2xl ${star <= activity.Rating ? "text-yellow-500" : "text-gray-300"}`}
+                    >
+                      &#9733;
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-2 text-gray-600">{activity.Review}</p>
+              </div>
+            </div>
           </div>
         </div>
       )}

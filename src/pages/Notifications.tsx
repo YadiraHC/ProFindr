@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import SideMenu from "../components/common/SideMenu";
 import NavbarApp from '../components/common/NavbarApp';
 import { fetchNotifications, Notification } from "../components/NotificationPage/notificationService";
@@ -7,51 +7,16 @@ const NotificationCard = lazy(() => import("../components/NotificationPage/Notif
 
 const Notifications: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(1);
-  const loader = useRef<HTMLDivElement | null>(null);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
-  const fetchMoreNotifications = useCallback(async () => {
-    const newNotifications = await fetchNotifications(page);
-    setNotifications((prevNotifications) => [...prevNotifications, ...newNotifications]);
-    setPage(page + 1);
-    if (newNotifications.length === 0) {
-      setHasMore(false);
-    }
-  }, [page]);
-
   useEffect(() => {
-    fetchMoreNotifications();
-  }, [fetchMoreNotifications]);
-
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: "20px",
-      threshold: 1.0
+    const fetchAllNotifications = async () => {
+      const allNotifications = await fetchNotifications();
+      setNotifications(allNotifications);
     };
 
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      const target = entries[0];
-      if (target.isIntersecting && hasMore) {
-        fetchMoreNotifications();
-      }
-    };
-
-    const observer = new IntersectionObserver(observerCallback, options);
-
-    const currentLoader = loader.current;
-    if (currentLoader) {
-      observer.observe(currentLoader);
-    }
-
-    return () => {
-      if (currentLoader) {
-        observer.unobserve(currentLoader);
-      }
-    };
-  }, [fetchMoreNotifications, hasMore]);
+    fetchAllNotifications();
+  }, []);
 
   const handleDelete = (id: number) => {
     setNotifications((prevNotifications) =>
@@ -80,19 +45,14 @@ const Notifications: React.FC = () => {
         </div>
         <div className="space-y-4">
           <Suspense fallback={<div>Loading...</div>}>
-            {notifications.map((notification) =>
-              notification.isVisible && (
-                <NotificationCard
-                  key={notification.NotificationId}
-                  notification={notification}
-                  onDelete={handleDelete}
-                />
-              )
-            )}
+            {notifications.filter(notification => notification.isVisible).map((notification) => (
+              <NotificationCard
+                key={notification.NotificationId}
+                notification={notification}
+                onDelete={handleDelete}
+              />
+            ))}
           </Suspense>
-          <div ref={loader}>
-            {hasMore && <h4>Loading...</h4>}
-          </div>
         </div>
       </div>
     </div>
