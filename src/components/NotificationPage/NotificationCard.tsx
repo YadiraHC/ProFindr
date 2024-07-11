@@ -12,48 +12,19 @@ type NotificationProps = {
     CreatedAt: string;
     Image: string; // Nueva propiedad opcional para la imagen específica de la notificación
   };
+  onDelete: (id: number) => void;
 };
 
 const defaultImage = "https://cdn-icons-png.flaticon.com/128/9131/9131646.png"; // Aquí va tu imagen base64
 
 export const NotificationCard: React.FC<NotificationProps> = ({
   notification,
+  onDelete
 }) => {
   const [showModal, setShowModal] = useState(false);
 
   // Asegurarse de que la imagen no esté vacía ni solo contenga espacios
   const imageSrc = notification.Image.trim() ? notification.Image : defaultImage;
-
-  const styles = {
-    modal: {
-      position: "fixed",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 1000,
-    } as React.CSSProperties,
-    modalContent: {
-      backgroundColor: "#fff",
-      padding: "20px",
-      borderRadius: "8px",
-      position: "relative",
-      maxWidth: "500px",
-      width: "100%",
-      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    } as React.CSSProperties,
-    close: {
-      position: "absolute",
-      top: "10px",
-      right: "10px",
-      fontSize: "1.5rem",
-      cursor: "pointer",
-    } as React.CSSProperties,
-  };
 
   return (
     <>
@@ -82,11 +53,14 @@ export const NotificationCard: React.FC<NotificationProps> = ({
             <div className="flex-grow mb-1">
               <button
                 className="bg-[#0A65CC] text-white px-3 py-1 rounded-lg mr-2"
-                /* onClick={() => setShowModal(true)} */
+                onClick={() => setShowModal(true)}
               >
                 View
               </button>
-              <button className="bg-[#FFFFFF] text-black px-3 py-1 rounded-lg border border-gray-300">
+              <button
+                className="bg-[#FFFFFF] text-black px-3 py-1 rounded-lg border border-gray-300"
+                onClick={() => onDelete(notification.NotificationId)}
+              >
                 Decline
               </button>
             </div>
@@ -99,13 +73,20 @@ export const NotificationCard: React.FC<NotificationProps> = ({
       </div>
 
       {showModal && (
-        <div style={styles.modal}>
-          <div style={styles.modalContent}>
-            <span style={styles.close} onClick={() => setShowModal(false)}>
-              &times;
-            </span>
-            <h2>{notification.title}</h2>
-            <p>{notification.Message} {notification.location} {notification.report}</p>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+          <div className="bg-white md:rounded-lg shadow-lg p-8 w-full md:w-3/5 lg:w-1/2 max-h-full overflow-y-auto">
+            <div className="flex justify-end">
+              <button
+                className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                onClick={() => setShowModal(false)}
+              >
+                <span className="material-icons">close</span>
+              </button>
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold mb-4">{notification.title}</h2>
+              <p className="text-gray-600 mb-2">{notification.Message} {notification.location} {notification.report}</p>
+            </div>
           </div>
         </div>
       )}

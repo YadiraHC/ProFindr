@@ -67,5 +67,4 @@ const ListChatsPage: React.FC = () => {
         </div>
     );
 };
-
 export default ListChatsPage;
