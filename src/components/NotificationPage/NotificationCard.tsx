@@ -99,8 +99,9 @@ const NotificationCard: React.FC<NotificationProps> = ({
                 <span className="material-icons">close</span>
               </button>
             </div>
-            <div className="text-justify">
+            <div className="text-justify mt-32">
               <h2 className="text-2xl font-bold mb-4  text-center">{notification.title}</h2>
+              
               <p className="text-gray-600 mb-2"><strong>Message:</strong> {notification.Message}</p>
               <p className="text-gray-600 mb-2"><strong>Location:</strong> {notification.location}</p>
               <p className="text-gray-600 mb-2"><strong>Report:</strong> {notification.report}</p>
