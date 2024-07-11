@@ -1,4 +1,7 @@
+// src/components/Home/steps/Step2.tsx
 import React, { useState } from 'react';
+import { createCertification } from '../../../services/certificationService';
+import { toast } from 'react-toastify';
 
 interface Step2Props {
     onSubmit: () => void;
@@ -22,11 +25,16 @@ const Step2: React.FC<Step2Props> = ({ onSubmit }) => {
         e.preventDefault();
         if (isFormValid) {
             try {
-                // Aquí puedes hacer la llamada a la API para guardar la certificación
-                // await createCertification({ certificationName, certificationFile });
-                onSubmit();
+                await createCertification({
+                    certificationName,
+                    certificationFile
+                });
+                toast.success('Certification created successfully!');
+                console.log('Certification created successfully!');
+                onSubmit();  // Cambiamos a onSubmit() para llamar al método del padre
             } catch (error) {
-                console.error('Failed to create certification:', error);
+                toast.error('Failed to create certification');
+                console.error('Failed to create certification', error);
             }
         }
     };

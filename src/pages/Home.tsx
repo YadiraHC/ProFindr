@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import SideMenu from '../components/common/SideMenu';
 import NavbarApp from '../components/common/NavbarApp';
 import ServiceCard from '../components/Home/ServiceCard';
 import AddServiceModal from '../components/Home/AddServiceModal';
 import Step1 from '../components/Home/steps/Step1';
 import Step2 from '../components/Home/steps/Step2';
+import Step3 from '../components/Home/steps/Step3';
+import Step4 from '../components/Home/steps/Step4';
 import Stepper from '../components/Home/steps/Stepper';
 import { getServices, getServiceById, createService, updateService, deleteService } from '../services/serviceServices';
 import { getProfessionalInfo, createProfessional } from '../services/professionalService';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Home: React.FC = () => {
     const [services, setServices] = useState<any[]>([]);
@@ -37,10 +38,12 @@ const Home: React.FC = () => {
             console.log('Professional info:', response);
             if (!response.professionalInfo) {
                 setCurrentStep(1);
-            } else if (!response.servicesInfo) {
-                setCurrentStep(2);
-            } else {
+            } else if (response.professionalInfo && response.certificationsInfo && !response.servicesInfo) {
                 setCurrentStep(3);
+            } else if (response.professionalInfo && !response.certificationsInfo) {
+                setCurrentStep(2);
+            } else if (response.professionalInfo && response.certificationsInfo && response.servicesInfo) {
+                setCurrentStep(5);
                 fetchServices();
             }
         } catch (error) {
@@ -84,11 +87,25 @@ const Home: React.FC = () => {
 
     const handleSubmitService = async (service: any) => {
         try {
+            const newService = await createService(service);
+            fetchServices(); // Volver a cargar los servicios después de agregar
+            toast.success('Service created successfully!');
+            setCurrentStep(4);
+            setTimeout(async () => {
+                await fetchProfessionalInfo();
+            }, 5000);
+        } catch (error) {
+            console.error('Failed to submit service:', error);
+        }
+    };
+
+    const handleSubmitServiceModal = async (service: any) => {
+        try {
             if (isEditMode && selectedService) {
                 await updateService(selectedService.serviceId, { ...service, serviceId: selectedService.serviceId });
                 fetchServices(); // Volver a cargar los servicios después de editar
             } else {
-                const newService = await createService(service);
+                await createService(service);
                 fetchServices(); // Volver a cargar los servicios después de agregar
             }
             setIsModalOpen(false);
@@ -104,7 +121,15 @@ const Home: React.FC = () => {
             fetchProfessionalInfo();
         } catch (error) {
             console.error('Failed to create professional:', error);
-            toast.error('Failed to create professional');
+        }
+    };
+
+    const handleSubmitCertification = async () => {
+        try {
+            await fetchProfessionalInfo();
+            
+        } catch (error) {
+            console.error('Failed to create certification', error);
         }
     };
 
@@ -142,7 +167,17 @@ const Home: React.FC = () => {
                 ) : currentStep === 2 ? (
                     <>
                         <Stepper step={2} />
-                        <Step2 onSubmit={() => setCurrentStep(3)} />
+                        <Step2 onSubmit={handleSubmitCertification} />
+                    </>
+                ) : currentStep === 3 ? (
+                    <>
+                        <Stepper step={3} />
+                        <Step3 onSubmit={handleSubmitService} />
+                    </>
+                ) : currentStep === 4 ? (
+                    <>
+                        <Stepper step={4} />
+                        <Step4 />
                     </>
                 ) : (
                     <>
@@ -171,7 +206,7 @@ const Home: React.FC = () => {
             <AddServiceModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                onSubmit={handleSubmitService}
+                onSubmit={handleSubmitServiceModal}
                 initialService={selectedService}
             />
             <ToastContainer />
