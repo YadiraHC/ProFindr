@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import SideMenu from '../components/common/SideMenu';
 import NavbarApp from '../components/common/NavbarApp';
 import ServiceCard from '../components/Home/ServiceCard';
 import AddServiceModal from '../components/Home/AddServiceModal';
-import Step1 from '../components/Home/layout/Step1';
-import Stepper from '../components/Home/layout/Stepper';
+import Step1 from '../components/Home/steps/Step1';
+import Step2 from '../components/Home/steps/Step2';
+import Stepper from '../components/Home/steps/Stepper';
 import { getServices, getServiceById, createService, updateService, deleteService } from '../services/serviceServices';
-import { getProfessionalInfo } from '../services/professionalService';
+import { getProfessionalInfo, createProfessional } from '../services/professionalService';
 
 const Home: React.FC = () => {
     const [services, setServices] = useState<any[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedService, setSelectedService] = useState<any>(null);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [showStep1, setShowStep1] = useState(false);
+    const [currentStep, setCurrentStep] = useState<number>(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
@@ -33,9 +36,11 @@ const Home: React.FC = () => {
             const response = await getProfessionalInfo();
             console.log('Professional info:', response);
             if (!response.professionalInfo) {
-                setShowStep1(true);
+                setCurrentStep(1);
+            } else if (!response.servicesInfo) {
+                setCurrentStep(2);
             } else {
-                setShowStep1(false);
+                setCurrentStep(3);
                 fetchServices();
             }
         } catch (error) {
@@ -92,6 +97,17 @@ const Home: React.FC = () => {
         }
     };
 
+    const handleSubmitProfessional = async (professional: any) => {
+        try {
+            await createProfessional(professional);
+            toast.success('Professional created successfully!');
+            fetchProfessionalInfo();
+        } catch (error) {
+            console.error('Failed to create professional:', error);
+            toast.error('Failed to create professional');
+        }
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -118,10 +134,15 @@ const Home: React.FC = () => {
             </div>
             <SideMenu isOpen={isSideMenuOpen} onClose={() => setIsSideMenuOpen(false)} />
             <div className="lg:flex-1 p-8 md:ml-64 overflow-auto">
-                {showStep1 ? (
+                {currentStep === 1 ? (
                     <>
                         <Stepper step={1} />
-                        <Step1 />
+                        <Step1 onSubmit={handleSubmitProfessional} />
+                    </>
+                ) : currentStep === 2 ? (
+                    <>
+                        <Stepper step={2} />
+                        <Step2 onSubmit={() => setCurrentStep(3)} />
                     </>
                 ) : (
                     <>
@@ -153,6 +174,7 @@ const Home: React.FC = () => {
                 onSubmit={handleSubmitService}
                 initialService={selectedService}
             />
+            <ToastContainer />
         </div>
     );
 };
