@@ -11,6 +11,7 @@ const MyActivity: React.FC = () => {
   const [page, setPage] = useState(1);
   const loader = useRef<HTMLDivElement | null>(null);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchMoreActivities = useCallback(async () => {
     const newActivities = await fetchActivities(page);
@@ -55,8 +56,40 @@ const MyActivity: React.FC = () => {
 
   return (
     <div className="lg:flex bg-[#F7F7F8] min-h-screen">
+      <style>{`
+        @media (max-width: 767px) {
+          .modal {
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+          }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+          .modal {
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+          }
+          .side-menu {
+            display: ${isModalOpen ? 'none' : 'block'};
+          }
+        }
+
+        .modal {
+          background-color: white;
+          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+          padding: 2rem;
+          overflow-y: auto;
+          z-index: 100;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      `}</style>
       <NavbarApp onMenuClick={() => setIsSideMenuOpen(true)} />
-      <div className="hidden md:block">
+      <div className={`hidden md:block side-menu`}>
         <SideMenu isOpen={true} onClose={() => setIsSideMenuOpen(false)} />
       </div>
       {isSideMenuOpen && (
@@ -64,7 +97,7 @@ const MyActivity: React.FC = () => {
           <SideMenu isOpen={isSideMenuOpen} onClose={() => setIsSideMenuOpen(false)} />
         </div>
       )}
-      <div className="flex-1 md:ml-64 p-8 overflow-auto">
+      <div className="flex-1 p-8 md:ml-64 overflow-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">My Activities</h1>
         </div>
@@ -74,6 +107,7 @@ const MyActivity: React.FC = () => {
               <ActivityCard
                 key={activity.ActivityId}
                 activity={activity}
+                onModalOpen={setIsModalOpen}
               />
             ))}
           </Suspense>
