@@ -1,5 +1,3 @@
-// src/pages/MyActivity.tsx
-
 import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
 import SideMenu from "../components/common/SideMenu";
 import NavbarApp from '../components/common/NavbarApp';

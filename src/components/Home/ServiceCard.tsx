@@ -40,6 +40,16 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onEdit, onDelete }) 
         };
     }, []);
 
+    const handleEdit = () => {
+        setIsDropdownOpen(false);
+        onEdit();
+    };
+
+    const handleDelete = () => {
+        setIsDropdownOpen(false);
+        onDelete();
+    };
+
     return (
         <div className="bg-white p-6 rounded-lg shadow-md flex justify-between items-center relative">
             <div className="flex-grow">
@@ -59,9 +69,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onEdit, onDelete }) 
                 <button className="material-icons text-gray-600" onClick={toggleDropdown}>more_vert</button>
                 {isDropdownOpen && (
                     <div ref={dropdownRef} className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50">
-                        <button className="block px-4 py-2 text-left w-full" onClick={onEdit}>Edit</button>
+                        <button className="block px-4 py-2 text-left w-full" onClick={handleEdit}>Edit</button>
                         <button className="block px-4 py-2 text-left w-full">View</button>
-                        <button className="block px-4 py-2 text-left w-full text-red-500" onClick={onDelete}>Delete</button>
+                        <button className="block px-4 py-2 text-left w-full text-red-500" onClick={handleDelete}>Delete</button>
                     </div>
                 )}
             </div>
