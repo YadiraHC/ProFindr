@@ -40,7 +40,7 @@ const AppRoutes = () => (
             <Route path="/find-work" element={<ProtectedRoute element={<FindWork />} allowedTypes={['employee']} />} />
             <Route path="/my-jobs" element={<ProtectedRoute element={<MyJobs />} allowedTypes={['employer']} />} />
             <Route path="/my-activity" element={<ProtectedRoute element={<MyActivity />} allowedTypes={['employer', 'employee']} />} />
-            <Route path="/messages" element={<ProtectedRoute element={<Messages />} allowedTypes={['employer', 'employee']} />} />
+           
             <Route path="/notifications" element={<ProtectedRoute element={<Notifications />} allowedTypes={['employer', 'employee']} />} />
             <Route path="/settings" element={<ProtectedRoute element={<Settings />} allowedTypes={['employer', 'employee']} />} />
             <Route path="/my-profile" element={<ProtectedRoute element={<MyProfile />} allowedTypes={['employer', 'employee']} />} />

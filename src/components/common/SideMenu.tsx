@@ -7,13 +7,13 @@ const menuItems = {
         { name: 'Home', icon: 'home', path: '/home' },
         { name: 'My Jobs', icon: 'work', path: '/my-jobs' },
         { name: 'My Activity', icon: 'insert_chart', path: '/my-activity' },
-        { name: 'Messages', icon: 'sms', path: '/messages' },
+        //{ name: 'Messages', icon: 'sms', path: '/messages' },
         { name: 'Notification', icon: 'mail', path: '/notifications' }
     ],
     employee: [
         { name: 'Find Work', icon: 'search', path: '/find-work' },
         { name: 'My Activity', icon: 'insert_chart', path: '/my-activity' },
-        { name: 'Messages', icon: 'sms', path: '/messages' },
+        //{ name: 'Messages', icon: 'sms', path: '/messages' },
         { name: 'Notification', icon: 'mail', path: '/notifications' }
     ]
 };
