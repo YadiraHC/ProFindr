@@ -1,17 +1,22 @@
-// src/components/common/SideMenu.tsx
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { logoutUser } from '../../services/userService';
+import { logoutUser, getUserProfile } from '../../services/userService';
 
-const menuItems = [
-    { name: 'Home', icon: 'home', path: '/home' },
-    { name: 'Find Work', icon: 'search', path: '/find-work' },
-    { name: 'My Jobs', icon: 'work', path: '/my-jobs' },
-    { name: 'My Activity', icon: 'insert_chart', path: '/my-activity' },
-    { name: 'Messages', icon: 'sms', path: '/messages' },
-    { name: 'Notification', icon: 'mail', path: '/notifications' }
-];
+const menuItems = {
+    employer: [
+        { name: 'Home', icon: 'home', path: '/home' },
+        { name: 'My Jobs', icon: 'work', path: '/my-jobs' },
+        { name: 'My Activity', icon: 'insert_chart', path: '/my-activity' },
+        //{ name: 'Messages', icon: 'sms', path: '/messages' },
+        { name: 'Notification', icon: 'mail', path: '/notifications' }
+    ],
+    employee: [
+        { name: 'Find Work', icon: 'search', path: '/find-work' },
+        { name: 'My Activity', icon: 'insert_chart', path: '/my-activity' },
+        //{ name: 'Messages', icon: 'sms', path: '/messages' },
+        { name: 'Notification', icon: 'mail', path: '/notifications' }
+    ]
+};
 
 interface SideMenuProps {
     isOpen: boolean;
@@ -23,6 +28,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose }) => {
     const location = useLocation();
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const profileDropdownRef = useRef<HTMLDivElement>(null);
+    const [userProfile, setUserProfile] = useState<any>(null);
 
     const toggleProfileDropdown = () => {
         setIsProfileDropdownOpen(!isProfileDropdownOpen);
@@ -45,11 +51,42 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose }) => {
     };
 
     useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const profile = await getUserProfile();
+                setUserProfile(profile);
+            } catch (err: any) {
+                console.error(err.message);
+            }
+        };
+
+        fetchUserProfile();
+    }, []);
+
+    useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    const renderMenuItems = () => {
+        if (!userProfile) return null;
+
+        const items = userProfile.userType === 'employer' ? menuItems.employer : menuItems.employee;
+        return items.map((item) => (
+            <div
+                key={item.name}
+                className={`flex items-center p-2 mb-4 rounded cursor-pointer ${
+                    location.pathname === item.path ? 'bg-blue-100 text-[#0A65CC]' : 'text-gray-700'
+                }`}
+                onClick={() => navigate(item.path)}
+            >
+                <span className="material-icons mr-3">{item.icon}</span>
+                <span>{item.name}</span>
+            </div>
+        ));
+    };
 
     return (
         <aside className={`fixed top-0 left-0 h-full w-full md:w-64 bg-white px-4 py-8 border-r overflow-y-auto z-50 transition-transform transform ${isOpen ? 'translate-y-0' : '-translate-y-full'} md:translate-y-0`}>
@@ -64,18 +101,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose }) => {
                 <span className="text-xl font-bold">ProFindr</span>
             </div>
             <nav>
-                {menuItems.map((item) => (
-                    <div
-                        key={item.name}
-                        className={`flex items-center p-2 mb-4 rounded cursor-pointer ${
-                            location.pathname === item.path ? 'bg-blue-100 text-[#0A65CC]' : 'text-gray-700'
-                        }`}
-                        onClick={() => navigate(item.path)}
-                    >
-                        <span className="material-icons mr-3">{item.icon}</span>
-                        <span>{item.name}</span>
-                    </div>
-                ))}
+                {renderMenuItems()}
             </nav>
             <div className="mt-[1rem] flex items-center p-4 relative" ref={profileDropdownRef}>
                 <img src="./images/user-avatar.png" alt="User Avatar" className="w-10 h-10 rounded-full mr-3" />

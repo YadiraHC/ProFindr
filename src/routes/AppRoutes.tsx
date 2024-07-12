@@ -20,7 +20,6 @@ import PublicRoute from '../components/common/PublicRoute';
 const NotFoundRedirect = () => {
     const navigate = useNavigate();
     React.useEffect(() => {
-        
         setTimeout(() => {
             navigate('/home');
             toast.error('Page not found, redirecting to home...');
@@ -37,14 +36,14 @@ const AppRoutes = () => (
             <Route path="/register" element={<PublicRoute element={<Register />} />} />
             <Route path="/login" element={<PublicRoute element={<Login />} />} />
             <Route path="/reset" element={<PublicRoute element={<ResetPassword />} />} />
-            <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-            <Route path="/find-work" element={<ProtectedRoute element={<FindWork />} />} />
-            <Route path="/my-jobs" element={<ProtectedRoute element={<MyJobs />} />} />
-            <Route path="/my-activity" element={<ProtectedRoute element={<MyActivity />} />} />
-            <Route path="/messages" element={<ProtectedRoute element={<Messages />} />} />
-            <Route path="/notifications" element={<ProtectedRoute element={<Notifications />} />} />
-            <Route path="/settings" element={<ProtectedRoute element={<Settings />} />} />
-            <Route path="/my-profile" element={<ProtectedRoute element={<MyProfile />} />} />
+            <Route path="/home" element={<ProtectedRoute element={<Home />} allowedTypes={['employer']} />} />
+            <Route path="/find-work" element={<ProtectedRoute element={<FindWork />} allowedTypes={['employee']} />} />
+            <Route path="/my-jobs" element={<ProtectedRoute element={<MyJobs />} allowedTypes={['employer']} />} />
+            <Route path="/my-activity" element={<ProtectedRoute element={<MyActivity />} allowedTypes={['employer', 'employee']} />} />
+           
+            <Route path="/notifications" element={<ProtectedRoute element={<Notifications />} allowedTypes={['employer', 'employee']} />} />
+            <Route path="/settings" element={<ProtectedRoute element={<Settings />} allowedTypes={['employer', 'employee']} />} />
+            <Route path="/my-profile" element={<ProtectedRoute element={<MyProfile />} allowedTypes={['employer', 'employee']} />} />
             <Route path="*" element={<NotFoundRedirect />} />
         </Routes>
         <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />

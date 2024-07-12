@@ -48,3 +48,23 @@ export async function logoutUser() {
     }
     return response.json();
 }
+
+export async function getUserProfile() {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/profile`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Something went wrong');
+    }
+
+    const profile = await response.json();
+    localStorage.setItem('userType', profile.userType);
+    return profile;
+}

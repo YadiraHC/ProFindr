@@ -3,17 +3,21 @@ import SideMenu from '../components/common/SideMenu';
 import NavbarApp from '../components/common/NavbarApp';
 import ServiceCard from '../components/Home/ServiceCard';
 import AddServiceModal from '../components/Home/AddServiceModal';
-import Step1 from '../components/Home/layout/Step1';
-import Stepper from '../components/Home/layout/Stepper';
+import Step1 from '../components/Home/steps/Step1';
+import Step2 from '../components/Home/steps/Step2';
+import Step3 from '../components/Home/steps/Step3';
+import Step4 from '../components/Home/steps/Step4';
+import Stepper from '../components/Home/steps/Stepper';
 import { getServices, getServiceById, createService, updateService, deleteService } from '../services/serviceServices';
-import { getProfessionalInfo } from '../services/professionalService';
+import { getProfessionalInfo, createProfessional } from '../services/professionalService';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Home: React.FC = () => {
     const [services, setServices] = useState<any[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedService, setSelectedService] = useState<any>(null);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [showStep1, setShowStep1] = useState(false);
+    const [currentStep, setCurrentStep] = useState<number>(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
@@ -33,9 +37,13 @@ const Home: React.FC = () => {
             const response = await getProfessionalInfo();
             console.log('Professional info:', response);
             if (!response.professionalInfo) {
-                setShowStep1(true);
-            } else {
-                setShowStep1(false);
+                setCurrentStep(1);
+            } else if (response.professionalInfo && response.certificationsInfo && !response.servicesInfo) {
+                setCurrentStep(3);
+            } else if (response.professionalInfo && !response.certificationsInfo) {
+                setCurrentStep(2);
+            } else if (response.professionalInfo && response.certificationsInfo && response.servicesInfo) {
+                setCurrentStep(5);
                 fetchServices();
             }
         } catch (error) {
@@ -79,16 +87,49 @@ const Home: React.FC = () => {
 
     const handleSubmitService = async (service: any) => {
         try {
+            const newService = await createService(service);
+            fetchServices(); // Volver a cargar los servicios después de agregar
+            toast.success('Service created successfully!');
+            setCurrentStep(4);
+            setTimeout(async () => {
+                await fetchProfessionalInfo();
+            }, 5000);
+        } catch (error) {
+            console.error('Failed to submit service:', error);
+        }
+    };
+
+    const handleSubmitServiceModal = async (service: any) => {
+        try {
             if (isEditMode && selectedService) {
                 await updateService(selectedService.serviceId, { ...service, serviceId: selectedService.serviceId });
                 fetchServices(); // Volver a cargar los servicios después de editar
             } else {
-                const newService = await createService(service);
+                await createService(service);
                 fetchServices(); // Volver a cargar los servicios después de agregar
             }
             setIsModalOpen(false);
         } catch (error) {
             console.error('Failed to submit service:', error);
+        }
+    };
+
+    const handleSubmitProfessional = async (professional: any) => {
+        try {
+            await createProfessional(professional);
+            toast.success('Professional created successfully!');
+            fetchProfessionalInfo();
+        } catch (error) {
+            console.error('Failed to create professional:', error);
+        }
+    };
+
+    const handleSubmitCertification = async () => {
+        try {
+            await fetchProfessionalInfo();
+            
+        } catch (error) {
+            console.error('Failed to create certification', error);
         }
     };
 
@@ -118,10 +159,25 @@ const Home: React.FC = () => {
             </div>
             <SideMenu isOpen={isSideMenuOpen} onClose={() => setIsSideMenuOpen(false)} />
             <div className="lg:flex-1 p-8 md:ml-64 overflow-auto">
-                {showStep1 ? (
+                {currentStep === 1 ? (
                     <>
                         <Stepper step={1} />
-                        <Step1 />
+                        <Step1 onSubmit={handleSubmitProfessional} />
+                    </>
+                ) : currentStep === 2 ? (
+                    <>
+                        <Stepper step={2} />
+                        <Step2 onSubmit={handleSubmitCertification} />
+                    </>
+                ) : currentStep === 3 ? (
+                    <>
+                        <Stepper step={3} />
+                        <Step3 onSubmit={handleSubmitService} />
+                    </>
+                ) : currentStep === 4 ? (
+                    <>
+                        <Stepper step={4} />
+                        <Step4 />
                     </>
                 ) : (
                     <>
@@ -150,9 +206,10 @@ const Home: React.FC = () => {
             <AddServiceModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                onSubmit={handleSubmitService}
+                onSubmit={handleSubmitServiceModal}
                 initialService={selectedService}
             />
+            <ToastContainer />
         </div>
     );
 };

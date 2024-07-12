@@ -103,11 +103,16 @@ const jobCategories: JobCategories = {
     ]
 };
 
-const Step1: React.FC = () => {
+interface Step1Props {
+    onSubmit: (professional: any) => void;
+}
+
+const Step1: React.FC<Step1Props> = ({ onSubmit }) => {
     const [selectedCategory, setSelectedCategory] = useState<string>('');
     const [selectedSubCategory, setSelectedSubCategory] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [profilePicture, setProfilePicture] = useState<string>('');
+    const [error, setError] = useState<string>('');
 
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(e.target.value);
@@ -119,20 +124,37 @@ const Step1: React.FC = () => {
     };
 
     const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setDescription(e.target.value);
+        if (e.target.value.length <= 500) {
+            setDescription(e.target.value);
+            setError('');
+        } else {
+            setError('Maximum 500 characters');
+        }
     };
 
     const handleProfilePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setProfilePicture(e.target.value);
     };
 
-    const isFormValid = selectedCategory && selectedSubCategory && description;
+    const isFormValid = selectedCategory && selectedSubCategory && description.length >= 30;
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (isFormValid) {
+            onSubmit({
+                occupation: selectedCategory,
+                lineOfWork: selectedSubCategory,
+                description,
+                profilePicture
+            });
+        }
+    };
 
     return (
         <div className="flex justify-center items-center h-full">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-xl">
                 <h1 className="text-2xl font-bold mb-4">Professional Info</h1>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div>
                             <label className="block text-gray-700 mb-1">Occupation</label>
@@ -170,6 +192,17 @@ const Step1: React.FC = () => {
                             value={description}
                             onChange={handleDescriptionChange}
                         ></textarea>
+                        <div className="flex items-center mt-2">
+                            <div className="relative w-8 h-8">
+                                <svg className="w-full h-full">
+                                    <circle cx="16" cy="16" r="16" fill="none" stroke="#e5e5e5" strokeWidth="2"></circle>
+                                    <circle cx="16" cy="16" r="16" fill="none" stroke="#0A65CC" strokeWidth="2" strokeDasharray={`${(description.length / 500) * 100}, 100`}></circle>
+                                </svg>
+                                <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-gray-700">{description.length}</span>
+                            </div>
+                            <span className="ml-2 text-sm text-gray-600">/ 500</span>
+                        </div>
+                        {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 mb-1">Profile Picture</label>
@@ -182,7 +215,7 @@ const Step1: React.FC = () => {
                         />
                     </div>
                     <button 
-                        type="button"
+                        type="submit"
                         className={`bg-[#0A65CC] text-white px-4 py-2 rounded-lg w-full ${isFormValid ? '' : 'opacity-50 cursor-not-allowed'}`}
                         disabled={!isFormValid}
                     >
