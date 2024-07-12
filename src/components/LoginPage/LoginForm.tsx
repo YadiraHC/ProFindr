@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Hook correcto para v6
-import { loginUser } from '../../services/userService';
+import { useNavigate } from 'react-router-dom'; 
+import { loginUser, getUserProfile } from '../../services/userService';
 
 const LoginForm: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate(); // Hook para navegación
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -15,9 +15,19 @@ const LoginForm: React.FC = () => {
 
         try {
             const response = await loginUser(credentials); 
-            localStorage.setItem('token', response.token); // Guardar el token en localStorage
+            localStorage.setItem('token', response.token);
+
             setError('');
-            navigate('/home'); // Redirigir a /home después de un login exitoso
+            
+            // Fetch user profile
+            const profile = await getUserProfile();
+            
+            // Redirect based on user type
+            if (profile.userType === 'employer') {
+                navigate('/home');
+            } else if (profile.userType === 'employee') {
+                navigate('/find-work');
+            }
         } catch (err: any) {
             setError(err.message);
         }
