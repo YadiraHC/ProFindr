@@ -21,7 +21,7 @@ export type Notification = {
 };
 
 export const fetchNotifications = async (): Promise<Notification[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  await new Promise((resolve) => setTimeout(resolve, 60));
 
   const exampleNotifications: Notification[] = [
     {

@@ -18,7 +18,7 @@ export type Activity = {
 };
 
 export const fetchActivities = async (page: number): Promise<Activity[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  await new Promise((resolve) => setTimeout(resolve, 60));
 
   const newActivities: Activity[] = [
     {

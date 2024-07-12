@@ -99,8 +99,8 @@ const NotificationCard: React.FC<NotificationProps> = ({
                 <span className="material-icons">close</span>
               </button>
             </div>
-            <div className="text-justify mt-32">
-              <h2 className="text-2xl font-bold mb-4  text-center">{notification.title}</h2>
+            <div className="text-justify mt-16">
+              <h2 className="text-2xl font-bold mb-2  text-center">{notification.title}</h2>
               
               <p className="text-gray-600 mb-2"><strong>Message:</strong> {notification.Message}</p>
               <p className="text-gray-600 mb-2"><strong>Location:</strong> {notification.location}</p>
@@ -114,7 +114,7 @@ const NotificationCard: React.FC<NotificationProps> = ({
               <p className="text-gray-600 mb-2"><strong>Updated At:</strong> {notification.UpdatedAt}</p>
               <p className="text-gray-600 mb-2"><strong>Address:</strong> {notification.Address}</p>
             </div>
-            <div className="flex justify-end mt-4 absolute bottom-4 left-4 right-4">
+            <div className="flex justify-end mt-4  bottom-4 left-4 right-4">
               <button
                 className="bg-[#0A65CC] text-white px-3 py-1 rounded-lg mr-2"
                 onClick={handleCloseModal}
