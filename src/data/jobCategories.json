@@ -1,0 +1,98 @@
+{
+    "Construction & Maintenance": [
+        "Bricklayer",
+        "Carpenter",
+        "Electrician",
+        "Plumber",
+        "Painter",
+        "Roofer",
+        "Window Installer",
+        "Welder",
+        "Locksmith",
+        "HVAC Technician"
+    ],
+    "Home Cleaning & Maintenance": [
+        "Residential Cleaner",
+        "Office Cleaner",
+        "Gardener",
+        "Janitor",
+        "Carpet Cleaner",
+        "Window Cleaner",
+        "Pool Maintenance",
+        "Car Washer",
+        "Post-Construction Cleaner",
+        "Chimney Cleaner"
+    ],
+    "Legal & Professional Services": [
+        "Lawyer",
+        "Accountant",
+        "Business Consultant",
+        "Human Resources Consultant",
+        "Financial Advisor",
+        "Life Coach",
+        "IT Consultant",
+        "Marketing Advisor",
+        "Project Management Consultant",
+        "Immigration Consultant"
+    ],
+    "Events & Entertainment": [
+        "Event Planner",
+        "DJ",
+        "Photographer",
+        "Videographer",
+        "Caterer",
+        "Florist",
+        "Party Entertainer",
+        "Event Decorator",
+        "Sound Technician",
+        "Lighting Technician"
+    ],
+    "Transport & Removals": [
+        "Taxi Driver",
+        "Delivery Driver",
+        "Moving Truck Driver",
+        "Moving Helper",
+        "Vehicle Transporter",
+        "Courier",
+        "Personal Chauffeur",
+        "Car Rental Service",
+        "International Moving Service",
+        "Professional Packer"
+    ],
+    "Account & Finance": [
+        "Bookkeeper",
+        "Tax Preparer",
+        "Financial Planner",
+        "Investment Advisor",
+        "Payroll Specialist",
+        "Credit Counselor",
+        "Financial Analyst",
+        "Auditor",
+        "Budget Consultant",
+        "Insurance Agent"
+    ],
+    "Personal Care & Well-being": [
+        "Personal Trainer",
+        "Yoga Instructor",
+        "Nutritionist",
+        "Massage Therapist",
+        "Life Coach",
+        "Health Coach",
+        "Chiropractor",
+        "Physical Therapist",
+        "Mental Health Counselor",
+        "Wellness Consultant"
+    ],
+    "Beauty": [
+        "Hair Stylist",
+        "Barber",
+        "Makeup Artist",
+        "Manicurist/Pedicurist",
+        "Esthetician",
+        "Tattoo Artist",
+        "Skincare Specialist",
+        "Beauty Consultant",
+        "Eyelash Technician",
+        "Waxing Specialist"
+    ]
+}
