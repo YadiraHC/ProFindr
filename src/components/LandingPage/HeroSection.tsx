@@ -1,6 +1,9 @@
+// src/components/LandingPage/HeroSection.tsx
+
 import React, { useState } from 'react';
 import { searchMunicipalities } from '../../utils/locationService';
 import { searchJobCategories } from '../../utils/jobCategoryService';
+import { searchServicesByOccupationAndLocation } from '../../services/serviceServices';
 
 const HeroSection: React.FC = () => {
     const [locationQuery, setLocationQuery] = useState('');
@@ -46,6 +49,25 @@ const HeroSection: React.FC = () => {
     const handleJobSuggestionClick = (subcategory: string, category: string) => {
         setJobQuery(`${subcategory}, ${category}`);
         setJobSuggestions([]);
+    };
+
+    const handleSearch = async () => {
+        const [municipality, state] = locationQuery ? locationQuery.split(',').map(part => part.trim()) : ['', ''];
+        const [lineOfWork, occupation] = jobQuery ? jobQuery.split(',').map(part => part.trim()) : ['', ''];
+
+        const searchParams = {
+            keywords: jobQuery ? `${lineOfWork}, ${occupation}` : '',
+            location: locationQuery ? `${municipality}, ${state}` : '',
+            state: state || '',
+            municipality: municipality || ''
+        };
+
+        try {
+            const searchResults = await searchServicesByOccupationAndLocation(searchParams);
+            console.log(searchResults); // Mostrar resultados en consola
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+        }
     };
 
     return (
@@ -119,7 +141,12 @@ const HeroSection: React.FC = () => {
                                 </div>
                             )}
                         </div>
-                        <button className="bg-[#0A65CC] text-white px-6 py-2 rounded-lg w-full lg:w-[25%] lg:shrink-0">Find Job</button>
+                        <button
+                            className="bg-[#0A65CC] text-white px-6 py-2 rounded-lg w-full lg:w-[25%] lg:shrink-0 z-20"
+                            onClick={handleSearch}
+                        >
+                            Find Job
+                        </button>
                     </div>
                     <p className="text-gray-500">
                         Suggestion: <span className="text-[#0A65CC]">Construction worker</span>, <span className="text-[#0A65CC]">Plumber</span>, <span className="text-blue-500">Electrician</span>, <span className="text-blue-500">Cleaning</span>, <span className="text-blue-500">Mechanics</span>.
@@ -129,7 +156,7 @@ const HeroSection: React.FC = () => {
                     <img src="./images/Professionals.png" alt="Professionals" className="w-full lg:w-3/4" />
                 </div>
             </div>
-            <div className=" hidden lg:grid container mx-auto px-6 mt-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="hidden lg:grid container mx-auto px-6 mt-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="bg-white p-6 rounded-lg shadow-md flex items-center ">
                     <div className="bg-blue-100 rounded-lg p-3 mr-4">
                         <span className="material-icons text-[#0A65CC]">work_outline</span>

@@ -91,3 +91,19 @@ export async function deleteService(serviceId: number) {
     toast.success('Service deleted successfully!');
     return;
 }
+
+export async function searchServicesByOccupationAndLocation(searchParams: { keywords?: string; location?: string; state?: string; municipality?: string }) {
+    const response = await fetch(`${API_URL}/searchByOccupationAndLocation`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(searchParams)
+    });
+    if (!response.ok) {
+        const error = await response.json();
+        toast.error(error.message || 'Something went wrong');
+        throw new Error(error.message || 'Something went wrong');
+    }
+    return response.json();
+}

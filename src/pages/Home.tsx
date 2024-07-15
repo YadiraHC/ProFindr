@@ -25,13 +25,18 @@ const Home: React.FC = () => {
 
     const fetchServices = async () => {
         try {
-            const fetchedServices = await getServices();
-            console.log('Fetched services:', fetchedServices); // Log the fetched services
-            setServices(fetchedServices);
+            const response = await getServices();
+            console.log('Fetched services:', response); // Log the fetched services
+            if (Array.isArray(response)) {
+                setServices(response);
+            } else {
+                setServices(response.services || []);
+            }
         } catch (error) {
             console.error('Failed to fetch services:', error);
         }
     };
+    
 
     const fetchProfessionalInfo = async () => {
         try {
