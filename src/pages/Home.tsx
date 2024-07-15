@@ -1,3 +1,4 @@
+// src/pages/Home.tsx (supongo que este es el archivo donde se encuentra el código principal de la página Home)
 import React, { useState, useEffect } from 'react';
 import SideMenu from '../components/common/SideMenu';
 import NavbarApp from '../components/common/NavbarApp';
