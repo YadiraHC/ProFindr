@@ -35,7 +35,7 @@ const AppRoutes = () => (
             <Route path="/" element={<LandingPage />} />
             <Route path="/register" element={<PublicRoute element={<Register />} />} />
             <Route path="/login" element={<PublicRoute element={<Login />} />} />
-            <Route path="/reset" element={<PublicRoute element={<ResetPassword />} />} />
+            <Route path="/forgot-password" element={<PublicRoute element={<ResetPassword />} />} />
             <Route path="/home" element={<ProtectedRoute element={<Home />} allowedTypes={['employer']} />} />
             <Route path="/find-work" element={<ProtectedRoute element={<FindWork />} allowedTypes={['employee']} />} />
             <Route path="/my-jobs" element={<ProtectedRoute element={<MyJobs />} allowedTypes={['employer']} />} />
