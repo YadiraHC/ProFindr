@@ -1,8 +1,29 @@
 import React, { useState } from 'react';
 import { searchMunicipalities } from '../../utils/locationService';
 import { searchJobCategories } from '../../utils/jobCategoryService';
+import { searchServicesByOccupationAndLocation } from '../../services/serviceServices';
 
-const SearchBar: React.FC = () => {
+interface Job {
+    serviceId: number;
+    professionalId: number;
+    serviceName: string;
+    serviceDescription: string;
+    state: string;
+    municipality: string;
+    hourlyRate: number;
+    availability: string;
+    createdAt: string;
+    updatedAt: string;
+    occupation: string;
+    lineOfWork: string;
+    averageJobRate: number;
+}
+
+interface SearchBarProps {
+    setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ setJobs }) => {
     const [locationQuery, setLocationQuery] = useState('');
     const [jobQuery, setJobQuery] = useState('');
     const [locationSuggestions, setLocationSuggestions] = useState<{ state: string; municipalities: string[] }[]>([]);
@@ -46,6 +67,26 @@ const SearchBar: React.FC = () => {
     const handleJobSuggestionClick = (subcategory: string, category: string) => {
         setJobQuery(`${subcategory}, ${category}`);
         setJobSuggestions([]);
+    };
+
+    const handleSearch = async () => {
+        const [municipality, state] = locationQuery ? locationQuery.split(',').map(part => part.trim()) : ['', ''];
+        const [lineOfWork, occupation] = jobQuery ? jobQuery.split(',').map(part => part.trim()) : ['', ''];
+
+        const searchParams = {
+            keywords: jobQuery ? `${lineOfWork}, ${occupation}` : '',
+            location: locationQuery ? `${municipality}, ${state}` : '',
+            state: state || '',
+            municipality: municipality || ''
+        };
+
+        try {
+            const searchResults = await searchServicesByOccupationAndLocation(searchParams);
+            console.log('Search results:', searchResults); // Mostrar resultados en consola
+            setJobs(searchResults);
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+        }
     };
 
     return (
@@ -112,7 +153,12 @@ const SearchBar: React.FC = () => {
                             </div>
                         )}
                     </div>
-                    <button className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg w-full lg:w-[20%] lg:shrink-0">Find Job</button>
+                    <button
+                        onClick={handleSearch}
+                        className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg w-full lg:w-[20%] lg:shrink-0 z-20"
+                    >
+                        Find Job
+                    </button>
                 </div>
             </div>
         </div>

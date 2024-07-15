@@ -3,31 +3,27 @@ import SideMenu from '../components/common/SideMenu';
 import NavbarApp from '../components/common/NavbarApp';
 import SearchBar from '../components/FindWork/SearchBar';
 import TagsFilter from '../components/FindWork/TagsFilter';
-import CardJobs from '../components/FindWork/CardJobs';
+import CardJob from '../components/FindWork/CardJobs';
 import SeeDetailsModal from '../components/FindWork/SeeDetailsModal';
 
 interface Job {
-    title: string;
-    rating?: number;
-    views: number;
-    location: string;
-    type: string;
-    price: number;
-    color: string;
+    serviceId: number;
+    professionalId: number;
+    serviceName: string;
+    serviceDescription: string;
+    state: string;
+    municipality: string;
+    hourlyRate: number;
+    availability: string;
+    createdAt: string;
+    updatedAt: string;
+    occupation: string;
+    lineOfWork: string;
+    averageJobRate: number;
 }
 
-const jobs: Job[] = [
-    { title: 'Construction & Maintenance', location: 'Cancún, Q. Roo', views: 150, type: 'Full-time', price: 600, rating: 4.5, color: '#DDF0FD' },
-    { title: 'Home Cleaning & Maintenance', location: 'Cancún, Q. Roo', views: 90, type: 'Part-time', price: 400, rating: 4.2, color: '#FFE3D9' },
-    { title: 'Legal & Professional Services', location: 'Cancún, Q. Roo', views: 200, type: 'Contract', price: 800, rating: 4.8, color: '#FDF4D8' },
-    { title: 'Events & Entertainment', location: 'Cancún, Q. Roo', views: 150, type: 'Full-time', price: 600, rating: 4.5, color: '#FFE1E7' },
-    { title: 'Transport & Removals', location: 'Cancún, Q. Roo', views: 150, type: 'Full-time', price: 600, rating: 4.5, color: '#E3E5FF' },
-    { title: 'Account & Finance', location: 'Cancún, Q. Roo', views: 150, type: 'Full-time', price: 600, rating: 4.5, color: '#E1FDDD' },
-    { title: 'Personal Care & Wellbeing', location: 'Cancún, Q. Roo', views: 90, type: 'Part-time', price: 400, rating: 4.2, color: '#C6C6C6' },
-    { title: 'Beauty', location: 'Cancún, Q. Roo', views: 200, type: 'Contract', price: 800, rating: 4.8, color: '#E4BFFA' },
-];
-
 const FindWork: React.FC = () => {
+    const [jobs, setJobs] = useState<Job[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedJob, setSelectedJob] = useState<Job | null>(null);
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
@@ -50,7 +46,7 @@ const FindWork: React.FC = () => {
             <SideMenu isOpen={isSideMenuOpen} onClose={() => setIsSideMenuOpen(false)} />
             <div className="lg:flex-1 p-8 md:ml-64 overflow-auto">
                 <div>
-                    <SearchBar />
+                    <SearchBar setJobs={setJobs} />
                 </div>
                 <div className="hidden md:block">
                     <TagsFilter />
@@ -65,14 +61,14 @@ const FindWork: React.FC = () => {
                             }
                         `}
                     </style>
-                    {jobs.map((job, index) => (
-                        <CardJobs key={index} job={job} openModal={() => openModal(job)} />
+                    {jobs.map((job) => (
+                        <CardJob key={job.serviceId} job={job} openModal={() => openModal(job)} />
                     ))}
                 </div>
             </div>
-            {selectedJob && (
+           {/*  {selectedJob && (
                 <SeeDetailsModal isOpen={isModalOpen} closeModal={closeModal} job={selectedJob} />
-            )}
+            )} */}
         </div>
     );
 };

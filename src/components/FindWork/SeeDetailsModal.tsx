@@ -4,13 +4,15 @@ interface ModalProps {
   isOpen: boolean;
   closeModal: () => void;
   job: {
-    title: string;
-    rating?: number;
+    serviceName: string;
+    averageJobRate: number;
     views: number;
-    location: string;
-    type: string;
-    price: number;
-    color: string;
+    municipality: string;
+    state: string;
+    hourlyRate: number;
+    occupation: string;
+    serviceDescription: string;
+    availability: string;
   };
 }
 
@@ -28,33 +30,32 @@ const SeeDetailsModal: React.FC<ModalProps> = ({ isOpen, closeModal, job }) => {
         <div className="sm:flex sm:flex-col sm:items-center"> {/* Top-left content */}
           <img className="w-24 h-24 rounded-full mb-5 mx-auto" src="./images/Twitter.png" alt="ProfilePicture" />
           <p className="text-2xl font-semibold text-blue-600">Noe Peréz Castillo</p>
-          <p className="text-lg font-semibold text-black mb-7">{job.location}</p>
+          <p className="text-lg font-semibold text-black mb-7">{job.municipality}, {job.state}</p>
         </div>
         <hr />
         <div className="flex flex-col md:flex-row"> {/* Flex container for desktop layout */}
           <div className="md:w-1/2">
             <div className="mt-0 ml-2 text-left">
               <p className="text-lg font-semibold text-black mb-0 mt-9">Services Offered:</p>
-              <p className="text-gray-600 mb-0">· {job.title}</p>
-              <p className="text-gray-600 mb-0">· Diseño de jardines personalizados</p>
-              <p className="text-gray-600 mb-0">· Mantenimiento general del jardín</p>
-              <p className="text-gray-600 mb-5">· Instalación de sistemas de riego</p>
+              <p className="text-gray-600 mb-0">· {job.serviceName}</p>
+              <p className="text-gray-600 mb-0">· {job.serviceDescription}</p>
+              <p className="text-gray-600 mb-5">· {job.availability}</p>
 
               <p className="text-lg font-semibold text-black">Rates:</p>
-              <p className="text-gray-600 mb-0">· Desde ${job.price} por hora</p>
+              <p className="text-gray-600 mb-0">· Desde ${job.hourlyRate} por hora</p>
               <p className="text-gray-600 mb-5">· Paquetes mensuales disponibles para mantenimiento regular.</p>
 
               <div className="flex flex-row">
                 <img className="w-20 h-4 mt-0.5" src=".\images\Start4.png" alt="Star" />
-                <p className="text-gray-600 ml-1 mb-0">{job.rating}</p>
-                <p className="text-gray-600 mb-3 ml-5">{job.views} Views</p>
+                <p className="text-gray-600 ml-1 mb-0">{job.averageJobRate}</p>
+                <p className="text-gray-600 mb-3 ml-5">{job.views || 0} Views</p>
               </div>
             </div>
           </div>
           <div className="md:w-1/2 mt-6 ml-2">
             <div className="ml-2 text-left">
               <p className="text-lg font-semibold text-black">Type:</p>
-              <p className="text-gray-600 mb-5">{job.type}</p>
+              <p className="text-gray-600 mb-5">{job.occupation}</p>
               <p className="text-lg font-semibold text-black">About me:</p>
               <p className="text-gray-600">
                 Soy un jardinero con más de 10 años de experiencia en el cuidado y mantenimiento de jardines residenciales y comerciales. Con un profundo amor por la naturaleza y un ojo para el diseño paisajístico, Me especializo en transformar espacios verdes en oasis de tranquilidad y belleza.

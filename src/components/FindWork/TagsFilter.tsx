@@ -3,7 +3,7 @@ import React from "react";
 const TagsFilter: React.FC = () => {
     return (
         <div className="p-4">
-            <div className="flex flex-wrap justify-start space-x-4 space-y-4 md:space-y-0">
+            {/* <div className="flex flex-wrap justify-start space-x-4 space-y-4 md:space-y-0">
                 <div className="flex items-center justify-center w-48 h-10 bg-[#0A65CC] border border-gray-200 rounded-full shadow hover:bg-gray-400">
                     <p className="font-normal text-white text-sm">Physiotherapist</p>
                 </div>
@@ -19,7 +19,7 @@ const TagsFilter: React.FC = () => {
                 <div className="flex items-center ml-auto text-blue-500">
                     <a href="#">Clear Filters</a>
                 </div>
-            </div>
+            </div> */}
             <div className="mt-3 flex justify-between items-center">
                 <p className="mt-1 font-semibold">
                     Jobs For You 
