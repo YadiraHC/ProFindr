@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { searchMunicipalities } from '../../utils/locationService';
 import { searchJobCategories } from '../../utils/jobCategoryService';
 import { searchServicesByOccupationAndLocation } from '../../services/serviceServices';
+import CountUp from 'react-countup';
 
 const HeroSection: React.FC = () => {
     const [locationQuery, setLocationQuery] = useState('');
@@ -162,7 +163,9 @@ const HeroSection: React.FC = () => {
                         <span className="material-icons text-[#0A65CC]">work_outline</span>
                     </div>
                     <div className="text-left">
-                        <p className="text-2xl font-medium">1,75,324</p>
+                        <p className="text-2xl font-medium">
+                            <CountUp end={175324} duration={10} separator="," />
+                        </p>
                         <p className="text-gray-600">Live Job</p>
                     </div>
                 </div>
@@ -171,7 +174,9 @@ const HeroSection: React.FC = () => {
                         <span className="material-icons text-[#0A65CC]">business</span>
                     </div>
                     <div className="text-left">
-                        <p className="text-2xl font-medium">97,354</p>
+                        <p className="text-2xl font-medium">
+                            <CountUp end={97354} duration={8} separator="," />
+                        </p>
                         <p className="text-gray-600">Companies</p>
                     </div>
                 </div>
@@ -180,7 +185,9 @@ const HeroSection: React.FC = () => {
                         <span className="material-icons text-[#0A65CC]">people</span>
                     </div>
                     <div className="text-left">
-                        <p className="text-2xl font-medium">38,47,154</p>
+                        <p className="text-2xl font-medium">
+                            <CountUp end={3847154} duration={15} separator="," />
+                        </p>
                         <p className="text-gray-600">Candidates</p>
                     </div>
                 </div>
@@ -189,7 +196,9 @@ const HeroSection: React.FC = () => {
                         <span className="material-icons text-[#0A65CC]">new_releases</span>
                     </div>
                     <div className="text-left">
-                        <p className="text-2xl font-medium">7,532</p>
+                        <p className="text-2xl font-medium">
+                            <CountUp end={7532} duration={8} separator="," />
+                        </p>
                         <p className="text-gray-600">New Jobs</p>
                     </div>
                 </div>
