@@ -1,5 +1,6 @@
-// src/components/Home/steps/Step3.tsx
 import React, { useState } from 'react';
+import { StatesAndMunicipalities } from '../../../types/locationTypes';
+import statesAndMunicipalities from '../../../data/statesAndMunicipalities.json';
 
 interface Step3Props {
     onSubmit: (service: any) => void;
@@ -13,6 +14,8 @@ const Step3: React.FC<Step3Props> = ({ onSubmit }) => {
     const [hourlyRate, setHourlyRate] = useState('');
     const [days, setDays] = useState<string[]>([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [serviceNameTouched, setServiceNameTouched] = useState(false);
+    const [serviceDescriptionTouched, setServiceDescriptionTouched] = useState(false);
 
     const handleDayToggle = (day: string) => {
         setDays((prev) =>
@@ -37,6 +40,18 @@ const Step3: React.FC<Step3Props> = ({ onSubmit }) => {
         onSubmit(newService);
     };
 
+    const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setState(e.target.value);
+        setMunicipality('');
+    };
+
+    const handleHourlyRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (!isNaN(Number(value))) {
+            setHourlyRate(value);
+        }
+    };
+
     return (
         <div className="flex justify-center items-center h-full">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-xl">
@@ -48,30 +63,48 @@ const Step3: React.FC<Step3Props> = ({ onSubmit }) => {
                             type="text"
                             value={serviceName}
                             onChange={(e) => setServiceName(e.target.value)}
+                            onBlur={() => setServiceNameTouched(true)}
                             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+                            maxLength={50}
                         />
+                        {serviceNameTouched && serviceName.length < 10 && (
+                            <p className="text-red-500 text-sm mt-1">Minimum 10 characters</p>
+                        )}
+                        {serviceName.length === 50 && (
+                            <p className="text-red-500 text-sm mt-1">Maximum 50 characters</p>
+                        )}
                     </div>
                     <div>
                         <label className="block text-gray-700 mb-1">Description</label>
                         <textarea
                             value={serviceDescription}
                             onChange={(e) => setServiceDescription(e.target.value)}
+                            onBlur={() => setServiceDescriptionTouched(true)}
                             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                             rows={3}
+                            maxLength={500}
                         />
+                        {serviceDescriptionTouched && serviceDescription.length < 20 && (
+                            <p className="text-red-500 text-sm mt-1">Minimum 20 characters</p>
+                        )}
+                        {serviceDescription.length === 500 && (
+                            <p className="text-red-500 text-sm mt-1">Maximum 500 characters</p>
+                        )}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-gray-700 mb-1">Select your state</label>
                             <select
                                 value={state}
-                                onChange={(e) => setState(e.target.value)}
+                                onChange={handleStateChange}
                                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                             >
                                 <option value="">Dropdown menu for states</option>
-                                <option value="State1">State1</option>
-                                <option value="State2">State2</option>
-                                <option value="State3">State3</option>
+                                {Object.keys(statesAndMunicipalities).map((stateKey) => (
+                                    <option key={stateKey} value={stateKey}>
+                                        {stateKey}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div>
@@ -80,11 +113,15 @@ const Step3: React.FC<Step3Props> = ({ onSubmit }) => {
                                 value={municipality}
                                 onChange={(e) => setMunicipality(e.target.value)}
                                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+                                disabled={!state}
                             >
                                 <option value="">Dropdown menu for municipalities</option>
-                                <option value="Municipality1">Municipality1</option>
-                                <option value="Municipality2">Municipality2</option>
-                                <option value="Municipality3">Municipality3</option>
+                                {state &&
+                                    (statesAndMunicipalities as StatesAndMunicipalities)[state].map((municipality) => (
+                                        <option key={municipality} value={municipality}>
+                                            {municipality}
+                                        </option>
+                                    ))}
                             </select>
                         </div>
                     </div>
@@ -94,7 +131,7 @@ const Step3: React.FC<Step3Props> = ({ onSubmit }) => {
                             <input
                                 type="text"
                                 value={hourlyRate}
-                                onChange={(e) => setHourlyRate(e.target.value)}
+                                onChange={handleHourlyRateChange}
                                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                             />
                         </div>
@@ -125,10 +162,10 @@ const Step3: React.FC<Step3Props> = ({ onSubmit }) => {
                     </div>
                     <button
                         onClick={handleSubmit}
-                        className={`w-full md:w-[50%] px-4 py-2 rounded-lg mt-4 ${!serviceName || !serviceDescription || !state || !municipality || !hourlyRate || days.length === 0 ? 'bg-[#0A65CC] bg-opacity-50 cursor-not-allowed' : 'bg-[#0A65CC] hover:bg-[#084a9b] text-white'}`}
-                        disabled={!serviceName || !serviceDescription || !state || !municipality || !hourlyRate || days.length === 0}
+                        className={`w-full md:w-[50%] px-4 py-2 rounded-lg mt-4 ${!serviceName || !serviceDescription || !state || !municipality || !hourlyRate || days.length === 0 || serviceName.length < 10 || serviceDescription.length < 20 ? 'bg-[#0A65CC] bg-opacity-50 cursor-not-allowed' : 'bg-[#0A65CC] hover:bg-[#084a9b] text-white'}`}
+                        disabled={!serviceName || !serviceDescription || !state || !municipality || !hourlyRate || days.length === 0 || serviceName.length < 10 || serviceDescription.length < 20}
                     >
-                        Create Service
+                        Create
                     </button>
                 </div>
             </div>

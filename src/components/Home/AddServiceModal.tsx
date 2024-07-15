@@ -1,6 +1,6 @@
-// src/components/Home/AddServiceModal.tsx
-
 import React, { useState, useEffect } from 'react';
+import { StatesAndMunicipalities } from '../../types/locationTypes';
+import statesAndMunicipalities from '../../data/statesAndMunicipalities.json';
 
 interface AddServiceModalProps {
     isOpen: boolean;
@@ -17,6 +17,8 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSu
     const [hourlyRate, setHourlyRate] = useState('');
     const [days, setDays] = useState<string[]>([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [serviceNameTouched, setServiceNameTouched] = useState(false);
+    const [serviceDescriptionTouched, setServiceDescriptionTouched] = useState(false);
 
     useEffect(() => {
         if (initialService) {
@@ -66,6 +68,18 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSu
         onClose();
     };
 
+    const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setState(e.target.value);
+        setMunicipality('');
+    };
+
+    const handleHourlyRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (!isNaN(Number(value))) {
+            setHourlyRate(value);
+        }
+    };
+
     if (!isOpen) return null;
 
     return (
@@ -84,30 +98,48 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSu
                             type="text"
                             value={serviceName}
                             onChange={(e) => setServiceName(e.target.value)}
+                            onBlur={() => setServiceNameTouched(true)}
                             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+                            maxLength={50}
                         />
+                        {serviceNameTouched && serviceName.length < 10 && (
+                            <p className="text-red-500 text-sm mt-1">Minimum 10 characters</p>
+                        )}
+                        {serviceName.length === 50 && (
+                            <p className="text-red-500 text-sm mt-1">Maximum 50 characters</p>
+                        )}
                     </div>
                     <div>
                         <label className="block text-gray-700 mb-1">Description</label>
                         <textarea
                             value={serviceDescription}
                             onChange={(e) => setServiceDescription(e.target.value)}
+                            onBlur={() => setServiceDescriptionTouched(true)}
                             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                             rows={3}
+                            maxLength={500}
                         />
+                        {serviceDescriptionTouched && serviceDescription.length < 20 && (
+                            <p className="text-red-500 text-sm mt-1">Minimum 20 characters</p>
+                        )}
+                        {serviceDescription.length === 500 && (
+                            <p className="text-red-500 text-sm mt-1">Maximum 500 characters</p>
+                        )}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-gray-700 mb-1">Select your state</label>
                             <select
                                 value={state}
-                                onChange={(e) => setState(e.target.value)}
+                                onChange={handleStateChange}
                                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                             >
                                 <option value="">Dropdown menu for states</option>
-                                <option value="State1">State1</option>
-                                <option value="State2">State2</option>
-                                <option value="State3">State3</option>
+                                {Object.keys(statesAndMunicipalities).map((stateKey) => (
+                                    <option key={stateKey} value={stateKey}>
+                                        {stateKey}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div>
@@ -116,11 +148,15 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSu
                                 value={municipality}
                                 onChange={(e) => setMunicipality(e.target.value)}
                                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+                                disabled={!state}
                             >
                                 <option value="">Dropdown menu for municipalities</option>
-                                <option value="Municipality1">Municipality1</option>
-                                <option value="Municipality2">Municipality2</option>
-                                <option value="Municipality3">Municipality3</option>
+                                {state &&
+                                    (statesAndMunicipalities as StatesAndMunicipalities)[state].map((municipality) => (
+                                        <option key={municipality} value={municipality}>
+                                            {municipality}
+                                        </option>
+                                    ))}
                             </select>
                         </div>
                     </div>
@@ -130,7 +166,7 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSu
                             <input
                                 type="text"
                                 value={hourlyRate}
-                                onChange={(e) => setHourlyRate(e.target.value)}
+                                onChange={handleHourlyRateChange}
                                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                             />
                         </div>
@@ -161,10 +197,10 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({ isOpen, onClose, onSu
                     </div>
                     <button
                         onClick={handleSubmit}
-                        className={`w-full md:w-[50%] px-4 py-2 rounded-lg mt-4 ${!serviceName || !serviceDescription || !state || !municipality || !hourlyRate || days.length === 0 ? 'bg-[#0A65CC] bg-opacity-50 cursor-not-allowed' : 'bg-[#0A65CC] hover:bg-[#084a9b] text-white'}`}
-                        disabled={!serviceName || !serviceDescription || !state || !municipality || !hourlyRate || days.length === 0}
+                        className={`w-full md:w-[50%] px-4 py-2 rounded-lg mt-4 ${!serviceName || !serviceDescription || !state || !municipality || !hourlyRate || days.length === 0 || serviceName.length < 10 || serviceDescription.length < 20 ? 'bg-[#0A65CC] bg-opacity-50 cursor-not-allowed' : 'bg-[#0A65CC] hover:bg-[#084a9b] text-white'}`}
+                        disabled={!serviceName || !serviceDescription || !state || !municipality || !hourlyRate || days.length === 0 || serviceName.length < 10 || serviceDescription.length < 20}
                     >
-                        {initialService ? 'Update Service' : 'Create Service'}
+                        {initialService ? 'Update' : 'Create'}
                     </button>
                 </div>
             </div>
