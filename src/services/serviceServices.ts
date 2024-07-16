@@ -107,3 +107,19 @@ export async function searchServicesByOccupationAndLocation(searchParams: { keyw
     }
     return response.json();
 }
+
+export async function getServiceProfessionalInfo(serviceId: number, professionalId: number) {
+    const response = await fetch(`${API_URL}/serviceProfessionalInfo?serviceId=${serviceId}&professionalId=${professionalId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+    if (!response.ok) {
+        const error = await response.json();
+        toast.error(error.message || 'Something went wrong');
+        throw new Error(error.message || 'Something went wrong');
+    }
+    return response.json();
+}

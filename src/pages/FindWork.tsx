@@ -5,6 +5,7 @@ import SearchBar from '../components/FindWork/SearchBar';
 import TagsFilter from '../components/FindWork/TagsFilter';
 import CardJob from '../components/FindWork/CardJobs';
 import SeeDetailsModal from '../components/FindWork/SeeDetailsModal';
+import { getServiceProfessionalInfo } from '../services/serviceServices';
 
 interface Job {
     serviceId: number;
@@ -22,15 +23,26 @@ interface Job {
     averageJobRate: number;
 }
 
+interface DetailedJob extends Job {
+    professionalFullName: string;
+    professionalDescription: string;
+}
+
 const FindWork: React.FC = () => {
     const [jobs, setJobs] = useState<Job[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+    const [selectedJob, setSelectedJob] = useState<DetailedJob | null>(null);
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
-    const openModal = (job: Job) => {
-        setSelectedJob(job);
-        setIsModalOpen(true);
+    const openModal = async (job: Job) => {
+        try {
+            const detailedJob = await getServiceProfessionalInfo(job.serviceId, job.professionalId);
+            console.log("Click desde see details",detailedJob)
+            setSelectedJob({ ...job, ...detailedJob });
+            setIsModalOpen(true);
+        } catch (error) {
+            console.error('Error fetching job details:', error);
+        }
     };
 
     const closeModal = () => {
@@ -38,7 +50,7 @@ const FindWork: React.FC = () => {
     };
 
     return (
-        <div className="lg:flex bg-[#F7F7F8] min-h-screen">
+        <div className="lg:flex bg-[#F7F7F8] min-h-screen relative">
             <NavbarApp onMenuClick={() => setIsSideMenuOpen(true)} />
             <div className="hidden md:block fixed">
                 <SideMenu isOpen={true} onClose={() => setIsSideMenuOpen(false)} />
@@ -66,9 +78,9 @@ const FindWork: React.FC = () => {
                     ))}
                 </div>
             </div>
-           {/*  {selectedJob && (
+            {selectedJob && (
                 <SeeDetailsModal isOpen={isModalOpen} closeModal={closeModal} job={selectedJob} />
-            )} */}
+            )}
         </div>
     );
 };
