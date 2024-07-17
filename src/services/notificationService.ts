@@ -1,32 +1,45 @@
 // src/services/notificationService.ts
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
+const API_URL = 'https://localhost:7254/api/Jobs';  // Asegúrate de que la URL es correcta y accesible
 
-const SOCKET_URL = 'http://localhost:15674/stomp'; // Asegúrate de reemplazar esto con tu URL de RabbitMQ
+export type Notification = {
+  jobId: number;
+  employerId: number;
+  employerName: string;
+  workerId: number;
+  workerName: string;
+  jobTitle: string;
+  jobDescription: string;
+  location: string;
+  rate: number;
+  rateType: string;
+  jobType: string;
+  serviceDate: string;
+  serviceTime: string;
+  acceptedProfessionalId: number;
+  createdAt: string;
+  updatedAt: string;
+  serviceId: number;
+};
 
-let stompClient: Stomp.Client | null = null;
-
-export function connect(onMessageReceived: (message: any) => void) {
-  const socket = new SockJS(SOCKET_URL);
-  stompClient = Stomp.over(socket);
-
-  stompClient.connect({}, (frame) => {
-    console.log('Connected: ' + frame);
-
-    stompClient?.subscribe('/user/queue/notifications', (message) => {
-      if (message.body) {
-        onMessageReceived(JSON.parse(message.body));
+export async function fetchNotifications(): Promise<Notification[]> {
+  try {
+    const response = await fetch(`${API_URL}/notificationsJob`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     });
-  }, (error) => {
-    console.error('Error connecting to WebSocket:', error);
-  });
-}
 
-export function disconnect() {
-  if (stompClient !== null) {
-    stompClient.disconnect(() => {
-      console.log('Disconnected');
-    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch notifications');
+    }
+
+    const result = await response.json();
+    console.log('Fetched notifications:', result.jobs);
+    return result.jobs.filter((job: Notification) => job.acceptedProfessionalId === 1);
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    throw error;
   }
 }

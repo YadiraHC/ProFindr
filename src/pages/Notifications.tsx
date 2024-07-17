@@ -1,7 +1,8 @@
+// src/pages/Notifications.tsx
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import SideMenu from "../components/common/SideMenu";
 import NavbarApp from '../components/common/NavbarApp';
-import { fetchNotifications, Notification } from "../components/NotificationPage/notificationService";
+import { fetchNotifications, Notification } from "../services/notificationService";
 
 const NotificationCard = lazy(() => import("../components/NotificationPage/NotificationCard"));
 
@@ -12,8 +13,13 @@ const Notifications: React.FC = () => {
 
   useEffect(() => {
     const fetchAllNotifications = async () => {
-      const allNotifications = await fetchNotifications();
-      setNotifications(allNotifications);
+      try {
+        const allNotifications = await fetchNotifications();
+        console.log('Fetched notifications in parent:', allNotifications); // Mostrar notificaciones en consola
+        setNotifications(allNotifications);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
     };
 
     fetchAllNotifications();
@@ -22,7 +28,7 @@ const Notifications: React.FC = () => {
   const handleDelete = (id: number) => {
     setNotifications((prevNotifications) =>
       prevNotifications.map(notification =>
-        notification.NotificationId === id
+        notification.jobId === id
           ? { ...notification, isVisible: false }
           : notification
       )
@@ -78,9 +84,9 @@ const Notifications: React.FC = () => {
         </div>
         <div className="space-y-4">
           <Suspense fallback={<div>Loading...</div>}>
-            {notifications.filter(notification => notification.isVisible).map((notification) => (
+            {notifications.filter(notification => notification.isVisible !== false).map((notification) => (
               <NotificationCard
-                key={notification.NotificationId}
+                key={notification.jobId}
                 notification={notification}
                 onDelete={handleDelete}
                 onModalOpen={setIsModalOpen}

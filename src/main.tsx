@@ -5,6 +5,7 @@ import App from './App';
 import './assets/styles/tailwind.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+//import './global'; 
 //import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

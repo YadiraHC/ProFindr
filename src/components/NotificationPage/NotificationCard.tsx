@@ -1,27 +1,22 @@
-import React, { useState } from "react";
+// src/components/NotificationPage/NotificationCard.tsx
+import React, { useState, useEffect } from "react";
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { Notification } from '../../services/notificationService';
+import { getAddressFromCoordinates } from '../../services/mapService';
+
+const defaultIcon = L.icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 
 type NotificationProps = {
-  notification: {
-    NotificationId: number;
-    UserId: number;
-    title: string;
-    Message: string;
-    location: string;
-    report: string;
-    IsRead: boolean;
-    CreatedAt: string;
-    Image: string;
-    isVisible: boolean;
-    ProfessionalId: number;
-    ServiceName: string;
-    ServiceDescription: string;
-    State: string;
-    Municipality: string;
-    HourlyRate: string;
-    Availability: string;
-    UpdatedAt: string;
-    Address: string; // Añadido el campo de dirección
-  };
+  notification: Notification;
   onDelete: (id: number) => void;
   onModalOpen: (isOpen: boolean) => void;
 };
@@ -34,10 +29,12 @@ const NotificationCard: React.FC<NotificationProps> = ({
   onModalOpen,
 }) => {
   const [showModal, setShowModal] = useState(false);
+  const [address, setAddress] = useState('');
 
   const handleOpenModal = () => {
     setShowModal(true);
     onModalOpen(true);
+    fetchAddress();
   };
 
   const handleCloseModal = () => {
@@ -45,7 +42,31 @@ const NotificationCard: React.FC<NotificationProps> = ({
     onModalOpen(false);
   };
 
-  const imageSrc = notification.Image.trim() ? notification.Image : defaultImage;
+  const imageSrc = defaultImage;
+
+  // Parse location from notification
+  const [lat, lng] = notification.location.replace("Lat: ", "").replace("Lng: ", "").split(", ").map(Number);
+
+  const fetchAddress = async () => {
+    try {
+      const fetchedAddress = await getAddressFromCoordinates(lat, lng);
+      console.log('Fetched address:', fetchedAddress); // Log the fetched address
+      setAddress(fetchedAddress);
+    } catch (error) {
+      console.error('Error fetching address:', error);
+      setAddress('Unable to fetch address');
+    }
+  };
+
+  useEffect(() => {
+    if (showModal) {
+      fetchAddress();
+    }
+  }, [showModal]);
+
+  useEffect(() => {
+    console.log('Rendering notification card:', notification); // Log the notification being rendered
+  }, [notification]);
 
   return (
     <>
@@ -60,11 +81,9 @@ const NotificationCard: React.FC<NotificationProps> = ({
           </div>
           <div className="flex-grow">
             <div className="mb-4">
-              <span className="text-xs font-bold">{notification.title} </span>
-              <span className="text-gray-600 text-xs">{notification.Message} </span>
-              <span className="text-xs font-bold">
-                {notification.location} {notification.report}
-              </span>
+              <span className="text-xs font-bold">{notification.employerName} </span>
+              <span className="text-gray-600 text-xs">requested access to </span>
+              <span className="text-xs font-bold">{notification.jobTitle}</span>
               <br />
             </div>
             <div className="flex-grow mb-1">
@@ -76,13 +95,13 @@ const NotificationCard: React.FC<NotificationProps> = ({
               </button>
               <button
                 className="bg-[#FFFFFF] text-black px-3 py-1 rounded-lg border border-gray-300"
-                onClick={() => onDelete(notification.NotificationId)}
+                onClick={() => onDelete(notification.jobId)}
               >
                 Decline
               </button>
             </div>
             <div className="flex-grow">
-              <p className="text-gray-500 text-xs ">{notification.CreatedAt}</p>
+              <p className="text-gray-500 text-xs ">{notification.createdAt}</p>
             </div>
           </div>
         </div>
@@ -100,21 +119,25 @@ const NotificationCard: React.FC<NotificationProps> = ({
               </button>
             </div>
             <div className="text-justify mt-16">
-              <h2 className="text-2xl font-bold mb-2  text-center">{notification.title}</h2>
-              
-              <p className="text-gray-600 mb-2"><strong>Message:</strong> {notification.Message}</p>
+              <h2 className="text-2xl font-bold mb-2  text-center">{notification.jobTitle}</h2>
+              <p className="text-gray-600 mb-2"><strong>Message:</strong> {notification.jobDescription}</p>
               <p className="text-gray-600 mb-2"><strong>Location:</strong> {notification.location}</p>
-              <p className="text-gray-600 mb-2"><strong>Report:</strong> {notification.report}</p>
-              <p className="text-gray-600 mb-2"><strong>Service Name:</strong> {notification.ServiceName}</p>
-              <p className="text-gray-600 mb-2"><strong>Service Description:</strong> {notification.ServiceDescription}</p>
-              <p className="text-gray-600 mb-2"><strong>State:</strong> {notification.State}</p>
-              <p className="text-gray-600 mb-2"><strong>Municipality:</strong> {notification.Municipality}</p>
-              <p className="text-gray-600 mb-2"><strong>Hourly Rate:</strong> {notification.HourlyRate}</p>
-              <p className="text-gray-600 mb-2"><strong>Availability:</strong> {notification.Availability}</p>
-              <p className="text-gray-600 mb-2"><strong>Updated At:</strong> {notification.UpdatedAt}</p>
-              <p className="text-gray-600 mb-2"><strong>Address:</strong> {notification.Address}</p>
+              <p className="text-gray-600 mb-2"><strong>Service Name:</strong> {notification.jobTitle}</p>
+              <p className="text-gray-600 mb-2"><strong>Service Description:</strong> {notification.jobDescription}</p>
+              <p className="text-gray-600 mb-2"><strong>Hourly Rate:</strong> {notification.rate}</p>
+              <p className="text-gray-600 mb-2"><strong>Updated At:</strong> {notification.updatedAt}</p>
+              <p className="text-gray-600 mb-2"><strong>Address:</strong> {address}</p>
             </div>
-            <div className="flex justify-end mt-4  bottom-4 left-4 right-4">
+            <div className="mb-4">
+              <MapContainer center={[lat, lng]} zoom={13} style={{ height: '300px', width: '100%' }}>
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <Marker position={[lat, lng]} icon={defaultIcon} />
+              </MapContainer>
+            </div>
+            <div className="flex justify-end mt-4 bottom-4 left-4 right-4">
               <button
                 className="bg-[#0A65CC] text-white px-3 py-1 rounded-lg mr-2"
                 onClick={handleCloseModal}
@@ -124,7 +147,7 @@ const NotificationCard: React.FC<NotificationProps> = ({
               <button
                 className="bg-[#FFFFFF] text-black px-3 py-1 rounded-lg border border-gray-300"
                 onClick={() => {
-                  onDelete(notification.NotificationId);
+                  onDelete(notification.jobId);
                   handleCloseModal();
                 }}
               >

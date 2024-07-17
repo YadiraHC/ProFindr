@@ -21,6 +21,18 @@ export async function getGeocoding(address: string) {
 }
 
 
+// src/services/mapService.ts
+export async function getAddressFromCoordinates(lat: number, lng: number): Promise<string> {
+  const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch address');
+  }
+  const data = await response.json();
+  console.log('Fetched address from OSM:', data.display_name); // Log the fetched address from OSM
+  return data.display_name;
+}
+
+
 /* const API_KEY = '10fbe7582dd5488e8014e25d045cbb15';
 
 export async function getGeocoding(address: string) {
