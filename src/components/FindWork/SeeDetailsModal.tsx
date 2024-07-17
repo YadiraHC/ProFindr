@@ -4,12 +4,16 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { toast } from 'react-toastify';
 import { getGeocoding } from '../../services/mapService';
+import { addJob } from '../../services/jobService';
 
 interface ModalProps {
   isOpen: boolean;
   closeModal: () => void;
   job: {
+    serviceId: number;
+    professionalId: number;
     serviceName: string;
     averageJobRate: number;
     municipality: string;
@@ -36,7 +40,7 @@ const LocationSelector = ({ setAddress }: { setAddress: (address: string) => voi
   const [position, setPosition] = useState<L.LatLng | null>(null);
 
   useMapEvents({
-    click(e:any) {
+    click(e: any) {
       setPosition(e.latlng);
       setAddress(`Lat: ${e.latlng.lat}, Lng: ${e.latlng.lng}`);
     }
@@ -56,16 +60,28 @@ const SeeDetailsModal: React.FC<ModalProps> = ({ isOpen, closeModal, job }) => {
   };
 
   const closeApplyModal = () => {
+    setSelectedDate(new Date());
+    setAddress('');
     setIsApplyModalOpen(false);
   };
 
   const handleApply = async () => {
+    const applyData = {
+      serviceId: job.serviceId,
+      professionalId: job.professionalId,
+      location: address,
+      serviceDate: selectedDate ? selectedDate.toISOString() : new Date().toISOString()
+    };
+
     try {
-      const geocodingData = await getGeocoding(address);
-      console.log('Geocoding data:', geocodingData);
-      // Lógica para aplicar al trabajo
+      const data = await addJob(applyData);
+      console.log('Job applied successfully:', data);
+      toast.success('Job applied successfully!');
     } catch (error) {
-      console.error('Error fetching geocoding data:', error);
+      console.error('Error applying for job:', error);
+      toast.error('Error applying for job');
+    } finally {
+      closeApplyModal();
     }
   };
 
@@ -140,7 +156,7 @@ const SeeDetailsModal: React.FC<ModalProps> = ({ isOpen, closeModal, job }) => {
 
       {isApplyModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white md:rounded-lg shadow-lg p-8 w-full md:w-3/5 lg:w-1/2 max-h-full overflow-y-auto">
+          <div className="bg-white md:rounded-lg shadow-lg p-8 w-full  h-[95%]  md:w-3/5 lg:w-1/2  overflow-y-auto">
             <div className="flex justify-end">
               <button onClick={closeApplyModal} className="text-gray-500 hover:text-gray-700 focus:outline-none">
                 <span className="material-icons">close</span>
@@ -161,7 +177,7 @@ const SeeDetailsModal: React.FC<ModalProps> = ({ isOpen, closeModal, job }) => {
               />
             </div>
             <div className="mb-4">
-              <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: '300px', width: '100%' }}>
+              <MapContainer center={[21.1619, -86.8515]} zoom={13} style={{ height: '300px', width: '100%' }}>
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -177,10 +193,11 @@ const SeeDetailsModal: React.FC<ModalProps> = ({ isOpen, closeModal, job }) => {
                 className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 selected={selectedDate}
                 onChange={(date) => setSelectedDate(date)}
+                minDate={new Date()}
               />
             </div>
             <button
-              className="w-full p-2.5 text-white bg-blue-600 rounded-md outline-none ring-offset-2 ring-blue-600 focus:ring-2"
+              className="w-full p-2.5 mt-[rem]  text-white bg-blue-600 rounded-md outline-none ring-offset-2 ring-blue-600 focus:ring-2"
               onClick={handleApply}
             >
               Apply
