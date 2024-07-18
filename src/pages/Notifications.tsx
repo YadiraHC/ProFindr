@@ -10,13 +10,15 @@ const Notifications: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userType, setUserType] = useState<string>(''); // Add state for user type
 
   useEffect(() => {
     const fetchAllNotifications = async () => {
       try {
-        const allNotifications = await fetchNotifications();
-        console.log('Fetched notifications in parent:', allNotifications); // Mostrar notificaciones en consola
-        setNotifications(allNotifications);
+        const { userType, jobs } = await fetchNotifications();
+        console.log('Fetched notifications in parent:', jobs); // Mostrar notificaciones en consola
+        setUserType(userType); // Set user type
+        setNotifications(jobs);
       } catch (error) {
         console.error('Error fetching notifications:', error);
       }
@@ -84,12 +86,20 @@ const Notifications: React.FC = () => {
         </div>
         <div className="space-y-4">
           <Suspense fallback={<div>Loading...</div>}>
-            {notifications.filter(notification => notification.isVisible !== false).map((notification) => (
+            {notifications.length > 0 && notifications.filter(notification => {
+              if (userType === 'employer' && notification.acceptedProfessionalId !== 1) {
+                return true;
+              } else if (userType === 'employer' && (notification.acceptedProfessionalId === 1)) {
+                return true;
+              }
+              return false;
+            }).map((notification) => (
               <NotificationCard
                 key={notification.jobId}
                 notification={notification}
                 onDelete={handleDelete}
                 onModalOpen={setIsModalOpen}
+                userType={userType} // Pass user type to child component
               />
             ))}
           </Suspense>

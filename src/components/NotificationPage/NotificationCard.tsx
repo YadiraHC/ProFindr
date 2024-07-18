@@ -19,6 +19,7 @@ type NotificationProps = {
   notification: Notification;
   onDelete: (id: number) => void;
   onModalOpen: (isOpen: boolean) => void;
+  userType: string; // Add user type to props
 };
 
 const defaultImage = "https://cdn-icons-png.flaticon.com/128/9131/9131646.png";
@@ -27,6 +28,7 @@ const NotificationCard: React.FC<NotificationProps> = ({
   notification,
   onDelete,
   onModalOpen,
+  userType // Add userType to props destructuring
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [address, setAddress] = useState('');
@@ -82,8 +84,8 @@ const NotificationCard: React.FC<NotificationProps> = ({
           <div className="flex-grow">
             <div className="mb-4">
               <span className="text-xs font-bold">{notification.employerName} </span>
-              <span className="text-gray-600 text-xs">requested access to </span>
-              <span className="text-xs font-bold">{notification.jobTitle}</span>
+              <span className="text-gray-600 text-xs">requested access to</span>
+              <span className="text-xs font-bold"> {notification.jobTitle}</span>
               <br />
             </div>
             <div className="flex-grow mb-1">
@@ -93,12 +95,14 @@ const NotificationCard: React.FC<NotificationProps> = ({
               >
                 View
               </button>
-              <button
-                className="bg-[#FFFFFF] text-black px-3 py-1 rounded-lg border border-gray-300"
-                onClick={() => onDelete(notification.jobId)}
-              >
-                Decline
-              </button>
+              {userType === 'employee' && notification.acceptedProfessionalId === 1 && (
+                <button
+                  className="bg-[#FFFFFF] text-black px-3 py-1 rounded-lg border border-gray-300"
+                  onClick={() => onDelete(notification.jobId)}
+                >
+                  Decline
+                </button>
+              )}
             </div>
             <div className="flex-grow">
               <p className="text-gray-500 text-xs ">{notification.createdAt}</p>
@@ -119,13 +123,10 @@ const NotificationCard: React.FC<NotificationProps> = ({
               </button>
             </div>
             <div className="text-justify mt-16">
-              <h2 className="text-2xl font-bold mb-2  text-center">{notification.jobTitle}</h2>
-              <p className="text-gray-600 mb-2"><strong>Message:</strong> {notification.jobDescription}</p>
-              <p className="text-gray-600 mb-2"><strong>Location:</strong> {notification.location}</p>
+              <h2 className="text-2xl font-bold mb-2 text-center">{notification.jobTitle}</h2>
               <p className="text-gray-600 mb-2"><strong>Service Name:</strong> {notification.jobTitle}</p>
               <p className="text-gray-600 mb-2"><strong>Service Description:</strong> {notification.jobDescription}</p>
-              <p className="text-gray-600 mb-2"><strong>Hourly Rate:</strong> {notification.rate}</p>
-              <p className="text-gray-600 mb-2"><strong>Updated At:</strong> {notification.updatedAt}</p>
+              <p className="text-gray-600 mb-2"><strong>Service Date:</strong> {notification.serviceDate}</p>
               <p className="text-gray-600 mb-2"><strong>Address:</strong> {address}</p>
             </div>
             <div className="mb-4">
@@ -144,15 +145,17 @@ const NotificationCard: React.FC<NotificationProps> = ({
               >
                 Accept
               </button>
-              <button
-                className="bg-[#FFFFFF] text-black px-3 py-1 rounded-lg border border-gray-300"
-                onClick={() => {
-                  onDelete(notification.jobId);
-                  handleCloseModal();
-                }}
-              >
-                Decline
-              </button>
+              {userType === 'employer' && notification.acceptedProfessionalId === 1 && (
+                <button
+                  className="bg-[#FFFFFF] text-black px-3 py-1 rounded-lg border border-gray-300"
+                  onClick={() => {
+                    onDelete(notification.jobId);
+                    handleCloseModal();
+                  }}
+                >
+                  Decline
+                </button>
+              )}
             </div>
           </div>
         </div>

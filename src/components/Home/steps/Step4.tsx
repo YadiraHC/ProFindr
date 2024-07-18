@@ -9,7 +9,7 @@ const Step4: React.FC = () => {
                     <img src="public/images/check.png" alt="Success" />
                 </div>
                 <h1 className="text-2xl font-bold mb-2">Welcome to ProFindr!</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.</p>
+                {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.</p> */}
             </div>
         </div>
     );

@@ -1,5 +1,5 @@
 // src/services/notificationService.ts
-const API_URL = 'https://localhost:7254/api/Jobs';  // Asegúrate de que la URL es correcta y accesible
+const API_URL = 'https://localhost:7254/api/Jobs';
 
 export type Notification = {
   jobId: number;
@@ -21,7 +21,7 @@ export type Notification = {
   serviceId: number;
 };
 
-export async function fetchNotifications(): Promise<Notification[]> {
+export async function fetchNotifications(): Promise<{ userType: string, jobs: Notification[] }> {
   try {
     const response = await fetch(`${API_URL}/notificationsJob`, {
       method: 'GET',
@@ -36,8 +36,7 @@ export async function fetchNotifications(): Promise<Notification[]> {
     }
 
     const result = await response.json();
-    console.log('Fetched notifications:', result.jobs);
-    return result.jobs.filter((job: Notification) => job.acceptedProfessionalId === 1);
+    return { userType: result.userType, jobs: result.jobs.filter((job: Notification) => job.acceptedProfessionalId === 1) };
   } catch (error) {
     console.error('Error fetching notifications:', error);
     throw error;
