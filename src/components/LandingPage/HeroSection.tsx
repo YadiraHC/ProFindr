@@ -143,7 +143,7 @@ const HeroSection: React.FC = () => {
                             )}
                         </div>
                         <button
-                            className="bg-[#0A65CC] text-white px-6 py-2 rounded-lg w-full lg:w-[25%] lg:shrink-0 z-20"
+                            className="bg-[#0A65CC] text-white px-6 py-2 rounded-lg w-full lg:w-[25%] lg:shrink-0 lg:z-20"
                             onClick={handleSearch}
                         >
                             Find Job

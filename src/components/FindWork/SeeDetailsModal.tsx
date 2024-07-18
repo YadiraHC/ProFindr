@@ -5,7 +5,6 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { toast } from 'react-toastify';
-import { getGeocoding } from '../../services/mapService';
 import { addJob } from '../../services/jobService';
 
 interface ModalProps {
@@ -76,7 +75,6 @@ const SeeDetailsModal: React.FC<ModalProps> = ({ isOpen, closeModal, job }) => {
     try {
       const data = await addJob(applyData);
       console.log('Job applied successfully:', data);
-      toast.success('Job applied successfully!');
     } catch (error) {
       console.error('Error applying for job:', error);
       toast.error('Error applying for job');
@@ -84,6 +82,14 @@ const SeeDetailsModal: React.FC<ModalProps> = ({ isOpen, closeModal, job }) => {
       closeApplyModal();
     }
   };
+
+  const openWhatsApp = () => {
+    const phoneNumber = '529987449856'; // Número de teléfono de WhatsApp
+    const url = `https://wa.me/${phoneNumber}`;
+    window.open(url, '_blank');
+  };
+
+  const isApplyButtonDisabled = !address || !selectedDate;
 
   if (!isOpen && !isApplyModalOpen) return null;
 
@@ -143,11 +149,11 @@ const SeeDetailsModal: React.FC<ModalProps> = ({ isOpen, closeModal, job }) => {
               <button
                 className="p-2.5 rounded-md outline-none ring-offset-2 ring-blue-600 focus:ring-2"
                 style={{
-                  background: `url('./images/MessagesModal.png') no-repeat center center`,
+                  background: `url('https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg') no-repeat center center`,
                   width: '52px',
                   height: '48px',
                 }}
-                onClick={() => {}}
+                onClick={openWhatsApp}
               />
             </div>
           </div>
@@ -156,14 +162,14 @@ const SeeDetailsModal: React.FC<ModalProps> = ({ isOpen, closeModal, job }) => {
 
       {isApplyModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white md:rounded-lg shadow-lg p-8 w-full  h-[95%]  md:w-3/5 lg:w-1/2  overflow-y-auto">
+          <div className="bg-white md:rounded-lg shadow-lg p-8 w-full h-[95%] md:w-3/5 lg:w-1/2 overflow-y-auto">
             <div className="flex justify-end">
               <button onClick={closeApplyModal} className="text-gray-500 hover:text-gray-700 focus:outline-none">
                 <span className="material-icons">close</span>
               </button>
             </div>
             <h2 className="text-2xl font-semibold mb-4">Apply for {job.serviceName}</h2>
-            
+
             <div className="mb-4 z-20">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">
                 Address
@@ -197,8 +203,9 @@ const SeeDetailsModal: React.FC<ModalProps> = ({ isOpen, closeModal, job }) => {
               />
             </div>
             <button
-              className="w-full p-2.5 mt-[rem]  text-white bg-blue-600 rounded-md outline-none ring-offset-2 ring-blue-600 focus:ring-2"
+              className="w-full p-2.5 mt-[rem] text-white bg-blue-600 rounded-md outline-none ring-offset-2 ring-blue-600 focus:ring-2"
               onClick={handleApply}
+              disabled={isApplyButtonDisabled}
             >
               Apply
             </button>

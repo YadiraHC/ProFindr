@@ -1,3 +1,4 @@
+// src/components/FindWork/SearchBar.tsx
 import React, { useState } from 'react';
 import { searchMunicipalities } from '../../utils/locationService';
 import { searchJobCategories } from '../../utils/jobCategoryService';
@@ -155,7 +156,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ setJobs }) => {
                     </div>
                     <button
                         onClick={handleSearch}
-                        className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg w-full lg:w-[20%] lg:shrink-0 z-20"
+                        className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg w-full lg:w-[20%] lg:shrink-0 lg:z-20"
                     >
                         Find Job
                     </button>
