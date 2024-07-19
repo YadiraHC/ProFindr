@@ -25,12 +25,21 @@ const Header: React.FC = () => {
                 </div>
                 <div className="flex items-center">
                     {isAuthenticated ? (
-                        <button
-                            className="bg-[#0A65CC] text-white px-4 py-2 rounded-lg"
-                            onClick={handleLogout}
-                        >
-                            Logout
-                        </button>
+                        <>
+                            <button
+                                className="flex items-center bg-[#0A65CC] text-white px-4 py-2 rounded-lg mr-2"
+                                onClick={() => navigate('/home')}
+                            >
+                                <span className="material-icons mr-2">home</span>
+                                Home
+                            </button>
+                            <button
+                                className="border border-[#0A65CC] text-[#0A65CC] px-4 py-2 rounded-lg mr-2"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
+                        </>
                     ) : (
                         <>
                             <button

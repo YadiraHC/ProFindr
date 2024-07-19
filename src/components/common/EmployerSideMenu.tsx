@@ -1,3 +1,4 @@
+// src/components/common/EmployerSideMenu.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { logoutUser } from '../../services/userService';
@@ -9,11 +10,17 @@ const employerMenuItems = [
     { name: 'Notification', icon: 'mail', path: '/notifications' }
 ];
 
-const EmployerSideMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+interface EmployerSideMenuProps {
+    onClose: () => void;
+    fullName: string | null;
+}
+
+const EmployerSideMenu: React.FC<EmployerSideMenuProps> = ({ onClose, fullName }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const profileDropdownRef = useRef<HTMLDivElement>(null);
+    const occupation = localStorage.getItem('occupation') || '';
 
     const toggleProfileDropdown = () => {
         setIsProfileDropdownOpen(!isProfileDropdownOpen);
@@ -30,6 +37,7 @@ const EmployerSideMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             await logoutUser();
             localStorage.removeItem('token');
             localStorage.removeItem('userType');
+            localStorage.removeItem('occupation');
             navigate('/login');
         } catch (err: any) {
             console.error(err.message);
@@ -72,8 +80,8 @@ const EmployerSideMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             <div className="mt-[1rem] flex items-center p-4 relative" ref={profileDropdownRef}>
                 <img src="./images/user-avatar.png" alt="User Avatar" className="w-10 h-10 rounded-full mr-3" />
                 <div>
-                    <p className="text-gray-700">Alexis Wolen</p>
-                    <p className="text-sm text-gray-500">Maintenance</p>
+                    <p className="text-gray-700">{fullName}</p>
+                    <p className="text-sm text-gray-500">{occupation}</p>
                 </div>
                 <button className="material-icons text-gray-600 ml-auto" onClick={toggleProfileDropdown}>more_vert</button>
                 {isProfileDropdownOpen && (

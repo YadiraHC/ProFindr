@@ -1,3 +1,4 @@
+// src/components/common/EmployeeSideMenu.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { logoutUser } from '../../services/userService';
@@ -5,11 +6,15 @@ import { logoutUser } from '../../services/userService';
 const employeeMenuItems = [
     { name: 'Find Work', icon: 'search', path: '/find-work' },
     { name: 'My Activity', icon: 'insert_chart', path: '/my-activity' },
-   
     { name: 'Notification', icon: 'mail', path: '/notifications' }
 ];
 
-const EmployeeSideMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+interface EmployeeSideMenuProps {
+    onClose: () => void;
+    fullName: string | null;
+}
+
+const EmployeeSideMenu: React.FC<EmployeeSideMenuProps> = ({ onClose, fullName }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -72,8 +77,8 @@ const EmployeeSideMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             <div className="mt-[1rem] flex items-center p-4 relative" ref={profileDropdownRef}>
                 <img src="./images/user-avatar.png" alt="User Avatar" className="w-10 h-10 rounded-full mr-3" />
                 <div>
-                    <p className="text-gray-700">Alexis Wolen</p>
-                    <p className="text-sm text-gray-500">Maintenance</p>
+                    <p className="text-gray-700">{fullName}</p>
+                   {/*  <p className="text-sm text-gray-500">Maintenance</p> */}
                 </div>
                 <button className="material-icons text-gray-600 ml-auto" onClick={toggleProfileDropdown}>more_vert</button>
                 {isProfileDropdownOpen && (

@@ -1,4 +1,4 @@
-// src/pages/Home.tsx (supongo que este es el archivo donde se encuentra el código principal de la página Home)
+// src/pages/Home.tsx
 import React, { useState, useEffect } from 'react';
 import SideMenu from '../components/common/SideMenu';
 import NavbarApp from '../components/common/NavbarApp';
@@ -42,6 +42,9 @@ const Home: React.FC = () => {
         try {
             const response = await getProfessionalInfo();
             console.log('Professional info:', response);
+            if (response.professional && response.professional.occupation) {
+                localStorage.setItem('occupation', response.professional.occupation);
+            }
             if (!response.professionalInfo) {
                 setCurrentStep(1);
             } else if (response.professionalInfo && response.certificationsInfo && !response.servicesInfo) {
