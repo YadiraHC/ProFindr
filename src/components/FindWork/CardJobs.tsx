@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface Job {
     serviceId: number;
@@ -18,10 +18,12 @@ interface Job {
 
 interface CardJobProps {
     job: Job;
-    openModal: () => void;
+    openModal: (job: Job, profileImage: string) => void;
 }
 
 const CardJob: React.FC<CardJobProps> = ({ job, openModal }) => {
+    const [profileImage, setProfileImage] = useState<string>('');
+
     const occupationColors: { [key: string]: string } = {
         'Construction & Maintenance': '#DDF0FD',
         'Home Cleaning & Maintenance': '#FFE3D9',
@@ -47,11 +49,26 @@ const CardJob: React.FC<CardJobProps> = ({ job, openModal }) => {
         return stars;
     };
 
+    useEffect(() => {
+        const fetchProfileImage = async () => {
+            try {
+                const response = await fetch('https://randomuser.me/api/');
+                const data = await response.json();
+                const imageUrl = data.results[0].picture.thumbnail;
+                setProfileImage(imageUrl);
+            } catch (error) {
+                console.error('Error fetching profile image:', error);
+            }
+        };
+
+        fetchProfileImage();
+    }, []);
+
     return (
         <div className="block w-full sm:w-64 p-3 bg-white rounded-3xl border border-gray-200 shadow-md">
             <div className="flex flex-col rounded-3xl" style={{ height: '250px', width: '100%', backgroundColor: color }}>
                 <div className="flex flex-row mt-3">
-                    <img className="object-scale-down w-9 h-9 ml-4" src="./images/Twitter.png" alt="Twitter" />
+                    <img className="object-scale-down w-9 h-9 ml-4 rounded-full" src={profileImage} alt="Profile" />
                     <img className="object-scale-down w-9 h-9 ml-auto mr-4" src="./images/Vector.png" alt="Vector" />
                 </div>
                 <div className="ml-3">
@@ -76,7 +93,7 @@ const CardJob: React.FC<CardJobProps> = ({ job, openModal }) => {
                 <button
                     type="button"
                     className="ml-3 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 font-normal rounded-lg text-sm px-3.5 py-2.5 me-2 dark:border-gray-700"
-                    onClick={openModal}
+                    onClick={() => openModal(job, profileImage)}
                 >
                     See Details
                 </button>

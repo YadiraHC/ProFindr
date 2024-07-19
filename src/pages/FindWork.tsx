@@ -1,5 +1,4 @@
-// src/pages/FindWork.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import SideMenu from '../components/common/SideMenu';
 import NavbarApp from '../components/common/NavbarApp';
 import SearchBar from '../components/FindWork/SearchBar';
@@ -27,20 +26,34 @@ interface Job {
 interface DetailedJob extends Job {
     professionalFullName: string;
     professionalDescription: string;
+    profileImage: string; // Añadir aquí
 }
 
 const FindWork: React.FC = () => {
     const [jobs, setJobs] = useState<Job[]>([]);
+    const [sortedJobs, setSortedJobs] = useState<Job[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedJob, setSelectedJob] = useState<DetailedJob | null>(null);
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
     const [sortOrder, setSortOrder] = useState('Newest');
 
-    const openModal = async (job: Job) => {
+    const sortJobs = useCallback((jobs: Job[], order: string) => {
+        return [...jobs].sort((a, b) => {
+            const dateA = new Date(a.createdAt).getTime();
+            const dateB = new Date(b.createdAt).getTime();
+            return order === 'Newest' ? dateB - dateA : dateA - dateB;
+        });
+    }, []);
+
+    useEffect(() => {
+        setSortedJobs(sortJobs(jobs, sortOrder));
+    }, [jobs, sortOrder, sortJobs]);
+
+    const openModal = async (job: Job, profileImage: string) => {
         try {
             const detailedJob = await getServiceProfessionalInfo(job.serviceId, job.professionalId);
-            console.log("Click desde see details",detailedJob)
-            setSelectedJob({ ...job, ...detailedJob });
+            console.log("Click desde see details", detailedJob)
+            setSelectedJob({ ...job, ...detailedJob, profileImage });
             setIsModalOpen(true);
         } catch (error) {
             console.error('Error fetching job details:', error);
@@ -50,14 +63,6 @@ const FindWork: React.FC = () => {
     const closeModal = () => {
         setIsModalOpen(false);
     };
-
-    const sortedJobs = [...jobs].sort((a, b) => {
-        if (sortOrder === 'Newest') {
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-        } else {
-            return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-        }
-    });
 
     return (
         <div className="lg:flex bg-[#F7F7F8] min-h-screen relative">
@@ -84,7 +89,7 @@ const FindWork: React.FC = () => {
                         `}
                     </style>
                     {sortedJobs.map((job) => (
-                        <CardJob key={job.serviceId} job={job} openModal={() => openModal(job)} />
+                        <CardJob key={job.serviceId} job={job} openModal={openModal} />
                     ))}
                 </div>
             </div>

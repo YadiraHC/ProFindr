@@ -23,6 +23,7 @@ interface ModalProps {
     availability: string;
     professionalFullName: string;
     professionalDescription: string;
+    profileImage: string; // Añadir aquí
   };
 }
 
@@ -104,7 +105,7 @@ const SeeDetailsModal: React.FC<ModalProps> = ({ isOpen, closeModal, job }) => {
               </button>
             </div>
             <div className="sm:flex sm:flex-col sm:items-center">
-              <img className="w-24 h-24 rounded-full mb-5 mx-auto" src="./images/Twitter.png" alt="ProfilePicture" />
+              <img className="w-24 h-24 rounded-full mb-5 mx-auto" src={job.profileImage} alt="ProfilePicture" />
               <p className="text-2xl font-semibold text-blue-600">{job.professionalFullName}</p>
               <p className="text-lg font-semibold text-black mb-7">{job.municipality}, {job.state}</p>
             </div>
